@@ -1,23 +1,30 @@
 package objects.animal;
 
 import maps.RectangularMap;
-import movements.Direction;
 import objects.AbstractPositionedObject;
 import position.Vector2d;
 
 import java.util.LinkedList;
+import java.util.Objects;
 
 public class Animal extends AbstractPositionedObject {
 
 
     private int energy;
-    private Gens gens;
+    private final Gens gens;
 
 
-    private RectangularMap map;
 
-    private LinkedList<FamilyMember> childrenAnimalList;
-    private LinkedList<FamilyMember> parentsAnimalList;
+
+    private final RectangularMap map;
+
+    private final LinkedList<FamilyMember> childrenAnimalList;
+    private final LinkedList<FamilyMember> parentsAnimalList;
+
+    @Override
+    public String toString() {
+        return "A";
+    }
 
     public Animal(Vector2d position, int energy, Gens gens, RectangularMap map) {
         super(position);
@@ -25,11 +32,17 @@ public class Animal extends AbstractPositionedObject {
         this.gens = gens;
 
         this.map = map;
-        this.isAnimal = true;
+
 
         childrenAnimalList = new LinkedList<>();
         parentsAnimalList = new LinkedList<>();
     }
+    @Override
+    public boolean isAnimal() {
+        return true;
+    }
+
+
 
 
     public void addToChildrenList(Animal child, int day) {
@@ -41,8 +54,14 @@ public class Animal extends AbstractPositionedObject {
         parentsAnimalList.add(new FamilyMember(parent2, day));
     }
 
+    /**
+     * Generates new position,
+     * In case of mirroring situation Animal gets mirrored
+     * @return new position
+     */
     public Vector2d generateNewPosition() {
-        return position.nextByNumber(gens.generateMove());
+        return position.nextByNumber(gens.generateMove())
+                .mirrorVectorIfOut(map.getWidth(),map.getHeight());
     }
 
 
@@ -58,4 +77,26 @@ public class Animal extends AbstractPositionedObject {
         this.energy = energy;
     }
 
+    @Override
+    public Vector2d getPosition() {
+        return position;
+    }
+    public Gens getGens() {
+        return gens;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Animal animal = (Animal) o;
+        return Objects.equals(gens, animal.gens) &&
+                Objects.equals(childrenAnimalList, animal.childrenAnimalList) &&
+                Objects.equals(parentsAnimalList, animal.parentsAnimalList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(gens, childrenAnimalList, parentsAnimalList);
+    }
 }

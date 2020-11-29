@@ -8,4 +8,12 @@ public class FamilyMember {
         this.animal = animal;
         this.dayWhenRelationshipStared = dayWhenRelationshipStared;
     }
+
+    @Override
+    public String toString() {
+        return "FamilyMember{" +
+                "animal=" + animal +
+                ", dayWhenRelationshipStared=" + dayWhenRelationshipStared +
+                '}';
+    }
 }
