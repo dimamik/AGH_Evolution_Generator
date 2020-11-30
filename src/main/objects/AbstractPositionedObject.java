@@ -8,14 +8,10 @@ public abstract class AbstractPositionedObject {
      * Position of Positioned object
      */
     protected Vector2d position;
-    protected boolean canMove = true;
-    public void setCanMove(boolean canMove) {
-        this.canMove = canMove;
-    }
 
-    public boolean isCanMove() {
-        return canMove;
-    }
+
+
+    protected ObjectStates state;
     public AbstractPositionedObject(Vector2d position) {
         this.position = position;
 
@@ -25,12 +21,26 @@ public abstract class AbstractPositionedObject {
         return position;
     }
 
-
-    public boolean isPaired() {
-        return false;
+    public ObjectStates getState() {
+        return state;
     }
 
-    public abstract boolean isAnimal();
+    public void setState(ObjectStates state) {
+        this.state = state;
+    }
+
+//    public boolean isPaired() {
+//        return false;
+//    }
+//    protected boolean canMove = true;
+//    public void setCanMove(boolean canMove) {
+//        this.canMove = canMove;
+//    }
+//
+//    public boolean isCanMove() {
+//        return canMove;
+//    }
+//    public abstract boolean isAnimal();
 
 
 }

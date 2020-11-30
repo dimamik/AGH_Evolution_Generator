@@ -2,6 +2,7 @@ package objects.animal;
 
 import maps.RectangularMap;
 import objects.AbstractPositionedObject;
+import objects.ObjectStates;
 import position.Vector2d;
 
 import java.util.LinkedList;
@@ -9,12 +10,8 @@ import java.util.Objects;
 
 public class Animal extends AbstractPositionedObject {
 
-
     private int energy;
     private final Gens gens;
-
-
-
 
     private final RectangularMap map;
 
@@ -30,20 +27,12 @@ public class Animal extends AbstractPositionedObject {
         super(position);
         this.energy = energy;
         this.gens = gens;
-
+        this.state = ObjectStates.MOVABLE;
         this.map = map;
-
 
         childrenAnimalList = new LinkedList<>();
         parentsAnimalList = new LinkedList<>();
     }
-    @Override
-    public boolean isAnimal() {
-        return true;
-    }
-
-
-
 
     public void addToChildrenList(Animal child, int day) {
         childrenAnimalList.add(new FamilyMember(child, day));
@@ -55,15 +44,13 @@ public class Animal extends AbstractPositionedObject {
     }
 
     /**
-     * Generates new position,
-     * In case of mirroring situation Animal gets mirrored
+     * Generates new position, In case of mirroring situation Animal gets mirrored
+     * 
      * @return new position
      */
     public Vector2d generateNewPosition() {
-        return position.nextByNumber(gens.generateMove())
-                .mirrorVectorIfOut(map.getWidth(),map.getHeight());
+        return position.nextByNumber(gens.generateMove()).mirrorVectorIfOut(map.getWidth(), map.getHeight());
     }
-
 
     public void setPosition(Vector2d position) {
         this.position = position;
@@ -81,18 +68,20 @@ public class Animal extends AbstractPositionedObject {
     public Vector2d getPosition() {
         return position;
     }
+
     public Gens getGens() {
         return gens;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Animal animal = (Animal) o;
-        return Objects.equals(gens, animal.gens) &&
-                Objects.equals(childrenAnimalList, animal.childrenAnimalList) &&
-                Objects.equals(parentsAnimalList, animal.parentsAnimalList);
+        return Objects.equals(gens, animal.gens) && Objects.equals(childrenAnimalList, animal.childrenAnimalList)
+                && Objects.equals(parentsAnimalList, animal.parentsAnimalList);
     }
 
     @Override

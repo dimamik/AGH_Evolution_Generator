@@ -1,6 +1,7 @@
 package objects.grass;
 
 import objects.AbstractPositionedObject;
+import objects.ObjectStates;
 import position.Vector2d;
 
 public class Grass extends AbstractPositionedObject {
@@ -11,11 +12,7 @@ public class Grass extends AbstractPositionedObject {
     public Grass(Vector2d position, int energy) {
         super(position);
         this.energy = energy;
-    }
-
-    @Override
-    public boolean isAnimal() {
-        return false;
+        this.state = ObjectStates.GRASS;
     }
 
     @Override
