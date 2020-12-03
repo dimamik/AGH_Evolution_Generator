@@ -2,7 +2,8 @@ package objects.animal;
 
 import java.util.Arrays;
 
-import static random.RandomGenerator.getRandomNumberInRange;
+import static objects.random.RandomGenerator.getRandomNumberInRange;
+
 
 public class Gens {
 

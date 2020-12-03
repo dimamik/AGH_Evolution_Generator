@@ -1,5 +1,7 @@
 package objects.animal;
 
+import objects.animal.Animal;
+
 public class FamilyMember {
     Animal animal;
     int dayWhenRelationshipStared;
