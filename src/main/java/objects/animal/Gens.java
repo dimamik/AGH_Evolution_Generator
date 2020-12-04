@@ -2,7 +2,7 @@ package objects.animal;
 
 import java.util.Arrays;
 
-import static objects.random.RandomGenerator.getRandomNumberInRange;
+import static random.RandomGenerator.getRandomNumberInRange;
 
 
 public class Gens {
@@ -21,8 +21,8 @@ public class Gens {
         typesInit();
         if (!isCorrect()) {
             System.out.println("NOT CORRECT DATA in Gens()");
-            this.genSequence = new int[] { 0, 0, 0, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 5, 5,
-                    6, 6, 7, 7, 7, 7 };
+            this.genSequence = new int[]{0, 0, 0, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 5, 5,
+                    6, 6, 7, 7, 7, 7};
             Arrays.sort(genSequence);
         }
     }
@@ -114,5 +114,18 @@ public class Gens {
 
     public int[] getGenSequence() {
         return genSequence;
+    }
+
+    public int getDominantGenome() {
+        int maxValue = Integer.MIN_VALUE;
+        int genome = 0;
+        int i;
+        for (i = 0; i < 8; i++) {
+            if (types[i] > maxValue) {
+                maxValue = types[i];
+                genome = i;
+            }
+        }
+        return i;
     }
 }

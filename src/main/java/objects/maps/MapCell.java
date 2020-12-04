@@ -4,7 +4,6 @@ import objects.AbstractPositionedObject;
 import objects.ObjectStates;
 import objects.animal.Animal;
 import objects.animal.FamilyGroup;
-import objects.random.RandomGenerator;
 import position.Vector2d;
 
 import java.util.LinkedList;
@@ -112,6 +111,13 @@ public class MapCell {
         }
         return Optional.ofNullable(familyGroup);
 
+    }
+
+    @Override
+    public String toString() {
+        return "MapCell{" +
+                "listOfObjects=" + listOfObjects +
+                '}';
     }
 
     public void eatGrassByStrongestAnimal() {

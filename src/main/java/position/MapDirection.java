@@ -10,7 +10,7 @@ public enum MapDirection {
     WEST(6),
     NORTHWEST(7);
 
-    private int numVal;
+    private final int numVal;
 
     MapDirection(int numVal) {
         this.numVal = numVal;

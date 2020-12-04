@@ -1,7 +1,7 @@
 package objects.grass;
 
 import objects.maps.RectangularMap;
-import objects.random.RandomGenerator;
+import random.RandomGenerator;
 import position.Vector2d;
 
 public class GrassGenerator {

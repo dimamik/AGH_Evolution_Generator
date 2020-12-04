@@ -2,7 +2,7 @@ package objects.animal;
 
 import objects.AbstractPositionedObject;
 import objects.ObjectStates;
-import objects.random.RandomGenerator;
+import random.RandomGenerator;
 import position.MapDirection;
 import position.Vector2d;
 
@@ -35,6 +35,7 @@ public class Animal extends AbstractPositionedObject {
     public int hashCode() {
         return Objects.hash(orientation, childrenAnimalList, parentsAnimalList, gens, energy);
     }
+
     public Animal(Vector2d position, int energy, Gens gens) {
         super(position);
         this.energy = energy;
@@ -52,6 +53,15 @@ public class Animal extends AbstractPositionedObject {
     public void addToParentsList(Animal parent1, Animal parent2, int day) {
         parentsAnimalList.add(new FamilyMember(parent1, day));
         parentsAnimalList.add(new FamilyMember(parent2, day));
+    }
+
+    @Override
+    public String toString() {
+        return "Animal{" +
+                "orientation=" + orientation +
+                ", gens=" + gens +
+                ", energy=" + energy +
+                '}';
     }
 
     /**
