@@ -12,6 +12,11 @@ import java.util.Objects;
 public class Animal extends AbstractPositionedObject {
 
     MapDirection orientation;
+
+    public LinkedList<FamilyMember> getChildrenAnimalList() {
+        return childrenAnimalList;
+    }
+
     LinkedList<FamilyMember> childrenAnimalList;
     LinkedList<FamilyMember> parentsAnimalList;
     Gens gens;

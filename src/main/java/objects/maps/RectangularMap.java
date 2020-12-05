@@ -1,10 +1,12 @@
 package objects.maps;
 
 import objects.AbstractPositionedObject;
+import objects.ObjectStates;
 import objects.animal.Animal;
 import objects.animal.FamilyGroup;
 import objects.grass.GrassGenerator;
 import position.Vector2d;
+import statistics.Statistics;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -15,7 +17,7 @@ import static objects.animal.PairAnimals.pairAnimalsFromFamilyGroup;
 
 public class RectangularMap {
     int currentDay;
-
+    Statistics statistics;
     /**
      * If Object is removed from cell -> Than we need to remove MapCell object from hashmap!
      */
@@ -25,10 +27,16 @@ public class RectangularMap {
     public RectangularMap() {
         this.currentDay = 0;
         this.cellsHashMap = new HashMap<>();
+        statistics = new Statistics(this);
     }
 
 
     public boolean addObject(AbstractPositionedObject object) {
+        if (object.getState() == ObjectStates.ANIMAL){
+            statistics.addAnimalToStatistics((Animal) object);
+
+        }
+
         if (!cellsHashMap.containsKey(object.getPosition())) {
             MapCell mapCell = new MapCell(object.getPosition());
             cellsHashMap.put(object.getPosition(), mapCell);
@@ -39,7 +47,18 @@ public class RectangularMap {
         }
         return false;
     }
+    public void removeObject(AbstractPositionedObject object) {
+        if (object.getState() == ObjectStates.ANIMAL){
+            statistics.removeAnimalFromStatistics((Animal) object);
+        }
 
+        Vector2d position = object.getPosition();
+        MapCell mapCell = cellsHashMap.get(position);
+        mapCell.removeObject(object);
+        if (mapCell.isEmpty()) {
+            cellsHashMap.remove(position);
+        }
+    }
     /**
      * Returns whether a position on the map is occupied (Either by Animal/Paired
      * Animal or Grass)
@@ -96,14 +115,7 @@ public class RectangularMap {
         addObject(animal);
     }
 
-    public void removeObject(AbstractPositionedObject object) {
-        Vector2d position = object.getPosition();
-        MapCell mapCell = cellsHashMap.get(position);
-        mapCell.removeObject(object);
-        if (mapCell.isEmpty()) {
-            cellsHashMap.remove(position);
-        }
-    }
+
 
     /**
      * Function to remove all dead Animals from the map
@@ -116,7 +128,7 @@ public class RectangularMap {
         LinkedList<Animal> listOfAnimals = new LinkedList<>();
         LinkedList<MapCell> listOfObjects = new LinkedList<>(cellsHashMap.values());
         for (MapCell currCell : listOfObjects) {
-            listOfAnimals.addAll(currCell.getAllAnimalsAndRemoveDead());
+            listOfAnimals.addAll(currCell.getAllAnimalsAndRemoveDead(statistics));
             if (currCell.isEmpty()) {
                 cellsHashMap.remove(currCell.getPosition());
             }
@@ -134,7 +146,7 @@ public class RectangularMap {
 
         LinkedList<MapCell> listOfObjects = new LinkedList<>(cellsHashMap.values());
         for (MapCell mapCell : listOfObjects) {
-            mapCell.eatGrassByStrongestAnimal();
+            mapCell.eatGrassByStrongestAnimal(statistics);
         }
     }
 
@@ -144,14 +156,17 @@ public class RectangularMap {
             Optional<FamilyGroup> familyGroupOptional = mapCell.pairAnimalsIfPossible();
             if (familyGroupOptional.isPresent()) {
                 //TODO Pair Animals given in FamilyGroup
+                statistics.addNewChildToStatistics();
                 pairAnimalsFromFamilyGroup(familyGroupOptional.get(), this);
             }
         }
     }
 
     public void generateGrass() {
-        GrassGenerator.generateGrasInJungles(this);
-        GrassGenerator.generateGrassOutOfJungles(this);
+        if (GrassGenerator.generateGrasInJungles(this))
+            statistics.addGrassToStatistics();
+        if (GrassGenerator.generateGrassOutOfJungles(this))
+            statistics.addGrassToStatistics();
     }
 
     public void subtractEnergy(LinkedList<Animal> listOfAnimals){
@@ -161,6 +176,8 @@ public class RectangularMap {
     }
 
     public void newDay() {
+        currentDay++;
+        statistics.decreaseSumEnergyByDayPrice();
         LinkedList<Animal> listOfAnimals = deleteDead();
         moveAllAnimals(listOfAnimals);
         eatByAnimals();

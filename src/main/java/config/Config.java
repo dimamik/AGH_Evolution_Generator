@@ -8,6 +8,7 @@ public class Config {
     public static int JUNGLE_RATIO = 3;
     public static int MOVE_ENERGY = 1;
     public static int PLANT_ENERGY = 10;
+    public static int ANIMALS_ON_START = 4;
 
     public Config() {
 

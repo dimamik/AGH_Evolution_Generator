@@ -1,8 +1,7 @@
 package objects.animal;
 
-import objects.animal.Animal;
-
 public class FamilyMember {
+    //TODO it is better not to have animal in there
     Animal animal;
     int dayWhenRelationshipStared;
 

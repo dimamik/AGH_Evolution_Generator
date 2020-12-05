@@ -5,6 +5,7 @@ import objects.ObjectStates;
 import objects.animal.Animal;
 import objects.animal.FamilyGroup;
 import position.Vector2d;
+import statistics.Statistics;
 
 import java.util.LinkedList;
 import java.util.Optional;
@@ -46,7 +47,7 @@ public class MapCell {
     }
 
 
-    public LinkedList<Animal> getAllAnimalsAndRemoveDead() {
+    public LinkedList<Animal> getAllAnimalsAndRemoveDead(Statistics statistics) {
         LinkedList<Animal> listOfAnimals = new LinkedList<>();
         LinkedList<AbstractPositionedObject> listOfObjectsTmp = new LinkedList<>();
         listOfObjectsTmp.addAll(listOfObjects);
@@ -54,7 +55,11 @@ public class MapCell {
             if (object.getState() == ObjectStates.ANIMAL) {
                 Animal animal = (Animal) object;
                 if (animal.getEnergy() <= 0)
+                {
                     listOfObjects.remove(animal);
+                    statistics.removeAnimalForever(animal);
+                }
+
                 else
                     listOfAnimals.add(animal);
             }
@@ -120,13 +125,14 @@ public class MapCell {
                 '}';
     }
 
-    public void eatGrassByStrongestAnimal() {
+    public void eatGrassByStrongestAnimal(Statistics statistics) {
         for (AbstractPositionedObject object : listOfObjects) {
             if (object.getState() == GRASS) {
                 if (findStrongestAnimal().isPresent()) {
                     Animal animal = findStrongestAnimal().get();
                     animal.setEnergy(animal.getEnergy() + PLANT_ENERGY);
                     listOfObjects.remove(object);
+                    statistics.removeGrassFromStatistics();
                     return;
                 }
             }

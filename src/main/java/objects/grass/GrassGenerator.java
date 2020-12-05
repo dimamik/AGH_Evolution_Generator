@@ -5,9 +5,9 @@ import random.RandomGenerator;
 import position.Vector2d;
 
 public class GrassGenerator {
-    public static void generateGrasInJungles(RectangularMap rectangularMap) {
+    public static boolean generateGrasInJungles(RectangularMap rectangularMap) {
         if (rectangularMap.isJungleFull()) {
-            return;
+            return false;
         }
         Vector2d position = RandomGenerator.getRandomPositionInsideJungles();
 
@@ -17,11 +17,12 @@ public class GrassGenerator {
         }
 
         rectangularMap.addObject(new Grass(position));
+        return true;
     }
 
-    public static void generateGrassOutOfJungles(RectangularMap rectangularMap) {
+    public static boolean generateGrassOutOfJungles(RectangularMap rectangularMap) {
         if (rectangularMap.isMapFull()) {
-            return;
+            return false;
         }
         Vector2d position = RandomGenerator.getRandomPositionInsideMapOutSideOfJungles();
 
@@ -29,5 +30,6 @@ public class GrassGenerator {
             position = RandomGenerator.getRandomPositionInsideMapOutSideOfJungles();
         }
         rectangularMap.addObject(new Grass(position));
+        return true;
     }
 }
