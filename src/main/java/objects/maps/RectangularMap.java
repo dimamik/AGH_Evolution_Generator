@@ -36,7 +36,6 @@ public class RectangularMap {
             statistics.addAnimalToStatistics((Animal) object);
 
         }
-
         if (!cellsHashMap.containsKey(object.getPosition())) {
             MapCell mapCell = new MapCell(object.getPosition());
             cellsHashMap.put(object.getPosition(), mapCell);
@@ -116,6 +115,15 @@ public class RectangularMap {
     }
 
 
+
+    public Optional<AbstractPositionedObject> getObjectFromCell(Vector2d cell){
+        if (cellsHashMap.containsKey(cell)) {
+            return cellsHashMap.get(cell).getBestObject();
+        }
+        else{
+            return Optional.empty();
+        }
+    }
 
     /**
      * Function to remove all dead Animals from the map
@@ -198,4 +206,7 @@ public class RectangularMap {
                 '}';
     }
 
+    public Statistics getStatistics() {
+        return statistics;
+    }
 }

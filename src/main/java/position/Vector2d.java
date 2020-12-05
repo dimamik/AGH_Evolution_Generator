@@ -38,13 +38,13 @@ public class Vector2d {
             y = 0;
         }
         if (y < 0) {
-            y = HEIGHT;
+            y = HEIGHT-1;
         }
         if (x > WIDTH) {
             x = 0;
         }
         if (x < 0) {
-            x = WIDTH;
+            x = WIDTH-1;
         }
         return this;
     }

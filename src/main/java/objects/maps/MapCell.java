@@ -138,5 +138,15 @@ public class MapCell {
             }
         }
     }
+    public Optional<AbstractPositionedObject> getBestObject(){
+        if (findStrongestAnimal().isPresent()){
+            return Optional.ofNullable(findStrongestAnimal().get());
+        }
+        else{
+            //Case when we have only grass
+            return Optional.ofNullable(listOfObjects.get(0));
+
+        }
+    }
 
 }
