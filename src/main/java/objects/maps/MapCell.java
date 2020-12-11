@@ -3,36 +3,32 @@ package objects.maps;
 import objects.AbstractPositionedObject;
 import objects.ObjectStates;
 import objects.animal.Animal;
-import objects.animal.FamilyGroup;
+import objects.animal.Family;
 import position.Vector2d;
 import statistics.Statistics;
 
 import java.util.LinkedList;
 import java.util.Optional;
 
-import static config.Config.*;
+import static config.Config.PLANT_ENERGY;
+import static config.Config.START_ENERGY;
 import static objects.ObjectStates.ANIMAL;
 import static objects.ObjectStates.GRASS;
 
-public class MapCell {
-    LinkedList<AbstractPositionedObject> listOfObjects;
-
-    public Vector2d getPosition() {
-        return position;
-    }
-
-    Vector2d position;
+public class MapCell{
+    //TODO listOfObjects can be replaced with HashTable but there is problem with hash()
+    private final LinkedList<AbstractPositionedObject> listOfObjects;
+    private final Vector2d position;
 
     public MapCell(Vector2d position) {
         this.listOfObjects = new LinkedList<>();
         this.position = position;
     }
 
-    public MapCell(Animal animal, Vector2d position) {
-        this.listOfObjects = new LinkedList<>();
-        listOfObjects.add(animal);
-        this.position = position;
+    public Vector2d getPosition() {
+        return position;
     }
+
 
     public void addObject(AbstractPositionedObject object) {
         listOfObjects.add(object);
@@ -46,50 +42,30 @@ public class MapCell {
         listOfObjects.remove(object);
     }
 
-
     public LinkedList<Animal> getAllAnimalsAndRemoveDead(Statistics statistics) {
         LinkedList<Animal> listOfAnimals = new LinkedList<>();
-        LinkedList<AbstractPositionedObject> listOfObjectsTmp = new LinkedList<>();
-        listOfObjectsTmp.addAll(listOfObjects);
+        LinkedList<AbstractPositionedObject> listOfObjectsTmp = new LinkedList<>(listOfObjects);
         for (AbstractPositionedObject object : listOfObjectsTmp) {
             if (object.getState() == ObjectStates.ANIMAL) {
                 Animal animal = (Animal) object;
-                if (animal.getEnergy() <= 0)
-                {
+                if (animal.getEnergy() <= 0) {
                     listOfObjects.remove(animal);
+                    //TODO statistics. can be replaced with observer notifications
                     statistics.removeAnimalForever(animal);
-                }
-
-                else
+                } else
                     listOfAnimals.add(animal);
             }
         }
         return listOfAnimals;
     }
 
-    private Optional<Animal> findStrongestAnimal(){
+    private Optional<Animal> findStrongestAnimal() {
         int maxEnergy = Integer.MIN_VALUE;
         Animal animalToReturn = null;
         for (AbstractPositionedObject object : listOfObjects) {
-            if (object.getState() == ANIMAL){
+            if (object.getState() == ANIMAL) {
                 Animal animal = (Animal) object;
-                if (animal.getEnergy() > maxEnergy){
-                    animalToReturn = animal;
-                    maxEnergy = animal.getEnergy();
-                }
-            }
-        }
-        return Optional.ofNullable(animalToReturn);
-    }
-    private Optional<Animal> findSecondStrongestAnimal(Animal firstStrongestAnimal){
-
-        int maxEnergy = Integer.MIN_VALUE;
-        Animal animalToReturn = null;
-        for (AbstractPositionedObject object : listOfObjects) {
-            if (object.getState() == ANIMAL){
-
-                Animal animal = (Animal) object;
-                if (animal.getEnergy() > maxEnergy && ! animal.equals(firstStrongestAnimal)){
+                if (animal.getEnergy() > maxEnergy) {
                     animalToReturn = animal;
                     maxEnergy = animal.getEnergy();
                 }
@@ -98,23 +74,40 @@ public class MapCell {
         return Optional.ofNullable(animalToReturn);
     }
 
-    private boolean canPair(Animal first, Animal second){
+    private Optional<Animal> findSecondStrongestAnimal(Animal firstStrongestAnimal) {
+
+        int maxEnergy = Integer.MIN_VALUE;
+        Animal animalToReturn = null;
+        for (AbstractPositionedObject object : listOfObjects) {
+            if (object.getState() == ANIMAL) {
+
+                Animal animal = (Animal) object;
+                if (animal.getEnergy() > maxEnergy && !animal.equals(firstStrongestAnimal)) {
+                    animalToReturn = animal;
+                    maxEnergy = animal.getEnergy();
+                }
+            }
+        }
+        return Optional.ofNullable(animalToReturn);
+    }
+
+    private boolean canPair(Animal first, Animal second) {
         return first.getEnergy() >= START_ENERGY && second.getEnergy() >= START_ENERGY;
     }
 
-    public Optional<FamilyGroup> pairAnimalsIfPossible(){
-        FamilyGroup familyGroup = null;
-        if (findStrongestAnimal().isPresent() ){
+    public Optional<Family> pairAnimalsIfPossible() {
+        Family family = null;
+        if (findStrongestAnimal().isPresent()) {
             Animal firstAnimal = findStrongestAnimal().get();
-            if (findSecondStrongestAnimal(firstAnimal).isPresent()){
+            if (findSecondStrongestAnimal(firstAnimal).isPresent()) {
                 Animal secondAnimal = findSecondStrongestAnimal(firstAnimal).get();
-                if (canPair(firstAnimal,secondAnimal)){
-                    familyGroup = new FamilyGroup(firstAnimal,secondAnimal);
+                if (canPair(firstAnimal, secondAnimal)) {
+                    family = new Family(firstAnimal, secondAnimal);
 
                 }
             }
         }
-        return Optional.ofNullable(familyGroup);
+        return Optional.ofNullable(family);
 
     }
 
@@ -138,15 +131,14 @@ public class MapCell {
             }
         }
     }
-    public Optional<AbstractPositionedObject> getBestObject(){
-        if (findStrongestAnimal().isPresent()){
-            return Optional.ofNullable(findStrongestAnimal().get());
-        }
-        else{
+
+
+    public Optional<AbstractPositionedObject> getBestObject() {
+        if (findStrongestAnimal().isPresent()) {
+            return Optional.of(findStrongestAnimal().get());
+        } else {
             //Case when we have only grass
             return Optional.ofNullable(listOfObjects.get(0));
-
         }
     }
-
 }

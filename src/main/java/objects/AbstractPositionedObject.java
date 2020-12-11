@@ -20,10 +20,6 @@ public abstract class AbstractPositionedObject {
         return state;
     }
 
-    public void setState(ObjectStates state) {
-        this.state = state;
-    }
-
     public void setPosition(Vector2d position) {
         this.position = position;
     }

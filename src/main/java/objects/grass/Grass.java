@@ -11,6 +11,4 @@ public class Grass extends AbstractPositionedObject {
         this.state = ObjectStates.GRASS;
     }
 
-
-
 }

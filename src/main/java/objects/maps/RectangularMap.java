@@ -3,8 +3,8 @@ package objects.maps;
 import objects.AbstractPositionedObject;
 import objects.ObjectStates;
 import objects.animal.Animal;
-import objects.animal.FamilyGroup;
-import objects.grass.GrassGenerator;
+import objects.animal.Family;
+import objects.grass.GenerateGrass;
 import position.Vector2d;
 import statistics.Statistics;
 
@@ -15,12 +15,9 @@ import java.util.Optional;
 import static config.Config.*;
 import static objects.animal.PairAnimals.pairAnimalsFromFamilyGroup;
 
-public class RectangularMap {
+public class RectangularMap implements IMap{
     int currentDay;
     Statistics statistics;
-    /**
-     * If Object is removed from cell -> Than we need to remove MapCell object from hashmap!
-     */
     HashMap<Vector2d, MapCell> cellsHashMap;
 
 
@@ -30,11 +27,10 @@ public class RectangularMap {
         statistics = new Statistics(this);
     }
 
-
+    @Override
     public boolean addObject(AbstractPositionedObject object) {
-        if (object.getState() == ObjectStates.ANIMAL){
+        if (object.getState() == ObjectStates.ANIMAL) {
             statistics.addAnimalToStatistics((Animal) object);
-
         }
         if (!cellsHashMap.containsKey(object.getPosition())) {
             MapCell mapCell = new MapCell(object.getPosition());
@@ -46,11 +42,11 @@ public class RectangularMap {
         }
         return false;
     }
+    @Override
     public void removeObject(AbstractPositionedObject object) {
-        if (object.getState() == ObjectStates.ANIMAL){
+        if (object.getState() == ObjectStates.ANIMAL) {
             statistics.removeAnimalFromStatistics((Animal) object);
         }
-
         Vector2d position = object.getPosition();
         MapCell mapCell = cellsHashMap.get(position);
         mapCell.removeObject(object);
@@ -58,16 +54,21 @@ public class RectangularMap {
             cellsHashMap.remove(position);
         }
     }
-    /**
-     * Returns whether a position on the map is occupied (Either by Animal/Paired
-     * Animal or Grass)
-     *
-     * @return
-     */
+
+    @Override
     public boolean isOccupied(Vector2d position) {
         return cellsHashMap.containsKey(position);
     }
 
+    /**
+     * Checks Map without Jungle for empty space
+     *
+     * Can be replaced with return cellsHashMap.size() == WIDTH*HEIGHT; But then we can't
+     * divide generated grass into two zones, so we need to check every position :(
+     * With a bit of Algorithmic it can be replaced with B-Tree
+     *
+     * @return - true if map is full, else - false
+     */
     public boolean isMapFull() {
         for (int x = 0; x <= WIDTH / JUNGLE_RATIO - 1; x++) {
             for (int y = 0; y < HEIGHT; y++) {
@@ -94,9 +95,12 @@ public class RectangularMap {
             }
         }
         return true;
-//        return cellsHashMap.size() == WIDTH*HEIGHT;
     }
 
+    /**
+     * Checks if Jungle is Full
+     * @return true if Jungle is Full, else False
+     */
     public boolean isJungleFull() {
         for (int x = (WIDTH / JUNGLE_RATIO); x < WIDTH - (WIDTH / JUNGLE_RATIO); x++) {
             for (int y = (HEIGHT / JUNGLE_RATIO); y < HEIGHT - (HEIGHT / JUNGLE_RATIO); y++) {
@@ -108,6 +112,7 @@ public class RectangularMap {
         return true;
     }
 
+
     public void moveAnimal(Animal animal) {
         removeObject(animal);
         animal.moveAnimal();
@@ -115,12 +120,11 @@ public class RectangularMap {
     }
 
 
-
-    public Optional<AbstractPositionedObject> getObjectFromCell(Vector2d cell){
-        if (cellsHashMap.containsKey(cell)) {
-            return cellsHashMap.get(cell).getBestObject();
-        }
-        else{
+   @Override
+    public Optional<AbstractPositionedObject> getObjectFromCell(Vector2d position) {
+        if (cellsHashMap.containsKey(position)) {
+            return cellsHashMap.get(position).getBestObject();
+        } else {
             return Optional.empty();
         }
     }
@@ -128,7 +132,7 @@ public class RectangularMap {
     /**
      * Function to remove all dead Animals from the map
      * And to return list of alive animals to lower the complexity
-     * of newDay method
+     * of moveAllAnimals method
      *
      * @return Linked List of Alive Animals
      */
@@ -151,7 +155,6 @@ public class RectangularMap {
     }
 
     public void eatByAnimals() {
-
         LinkedList<MapCell> listOfObjects = new LinkedList<>(cellsHashMap.values());
         for (MapCell mapCell : listOfObjects) {
             mapCell.eatGrassByStrongestAnimal(statistics);
@@ -161,9 +164,8 @@ public class RectangularMap {
     public void pairAnimals() {
         LinkedList<MapCell> listOfObjects = new LinkedList<>(cellsHashMap.values());
         for (MapCell mapCell : listOfObjects) {
-            Optional<FamilyGroup> familyGroupOptional = mapCell.pairAnimalsIfPossible();
+            Optional<Family> familyGroupOptional = mapCell.pairAnimalsIfPossible();
             if (familyGroupOptional.isPresent()) {
-                //TODO Pair Animals given in FamilyGroup
                 statistics.addNewChildToStatistics();
                 pairAnimalsFromFamilyGroup(familyGroupOptional.get(), this);
             }
@@ -171,18 +173,19 @@ public class RectangularMap {
     }
 
     public void generateGrass() {
-        if (GrassGenerator.generateGrasInJungles(this))
+        if (GenerateGrass.generateGrasInJungles(this))
             statistics.addGrassToStatistics();
-        if (GrassGenerator.generateGrassOutOfJungles(this))
+        if (GenerateGrass.generateGrassOutOfJungles(this))
             statistics.addGrassToStatistics();
     }
 
-    public void subtractEnergy(LinkedList<Animal> listOfAnimals){
-        for (Animal animal: listOfAnimals){
-            animal.setEnergy(animal.getEnergy() -MOVE_ENERGY );
+    public void subtractEnergy(LinkedList<Animal> listOfAnimals) {
+        for (Animal animal : listOfAnimals) {
+            animal.setEnergy(animal.getEnergy() - MOVE_ENERGY);
         }
     }
 
+    //TODO Replace with simulation.newDay()
     public void newDay() {
         currentDay++;
         statistics.decreaseSumEnergyByDayPrice();
@@ -190,12 +193,17 @@ public class RectangularMap {
         moveAllAnimals(listOfAnimals);
         eatByAnimals();
         pairAnimals();
+        //TODO Make Animal Observer to die by himself (reducing time complexity)
         subtractEnergy(listOfAnimals);
         generateGrass();
     }
 
     public int getCurrentDay() {
         return currentDay;
+    }
+
+    public void increaseDay() {
+        currentDay++;
     }
 
     @Override

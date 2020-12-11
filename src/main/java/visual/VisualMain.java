@@ -39,7 +39,7 @@ public class VisualMain extends Application {
 
         updateMap(stage);
 
-        Timeline oneSecondsWonder = new Timeline(new KeyFrame(Duration.millis(1000), (ActionEvent event1) -> {
+        Timeline oneSecondsWonder = new Timeline(new KeyFrame(Duration.millis(2000), (ActionEvent event1) -> {
 //            rectangularMap.newDay();
             rectangularMap.newDay();
             updateMap(stage);
@@ -64,10 +64,10 @@ public class VisualMain extends Application {
         rectangularMap = new RectangularMap();
         int[] genSeq = {0, 0, 0, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 5, 5, 6, 6, 7, 7, 7, 7};
         int[] genSeq2 = {0, 0, 7, 1, 1, 7, 2, 0, 2, 0, 2, 3, 7, 7, 7, 4, 4, 4, 4, 0, 7, 0, 7, 0, 5, 5, 6, 6, 7, 7, 7, 7};
-        rectangularMap.addObject(new Animal(RandomGenerator.getRandomPosition(WIDTH, HEIGHT), 20, new Gens(genSeq)));
-        rectangularMap.addObject(new Animal(RandomGenerator.getRandomPosition(WIDTH, HEIGHT), 20, new Gens(genSeq)));
-        rectangularMap.addObject(new Animal(RandomGenerator.getRandomPosition(WIDTH, HEIGHT), 20, new Gens(genSeq2)));
-        rectangularMap.addObject(new Animal(RandomGenerator.getRandomPosition(WIDTH, HEIGHT), 20, new Gens(genSeq2)));
+        rectangularMap.addObject(new Animal(RandomGenerator.getRandomPosition(WIDTH, HEIGHT), 200, new Gens(genSeq)));
+        rectangularMap.addObject(new Animal(RandomGenerator.getRandomPosition(WIDTH, HEIGHT), 200, new Gens(genSeq)));
+        rectangularMap.addObject(new Animal(RandomGenerator.getRandomPosition(WIDTH, HEIGHT), 200, new Gens(genSeq2)));
+        rectangularMap.addObject(new Animal(RandomGenerator.getRandomPosition(WIDTH, HEIGHT), 200, new Gens(genSeq2)));
         launch();
     }
 
@@ -85,10 +85,13 @@ public class VisualMain extends Application {
         getAnimalCount = new Text("getAnimalCount " + rectangularMap.getStatistics().getAnimalCount());
         getGrassCount = new Text("getGrassCount " + rectangularMap.getStatistics().getGrassCount());
         root.setRight(new Text("RIGHT SIDEBAR - CONTROLS"));
-        VBox vBox = new VBox(50, visualRectangularMap,btn,getAverageEnergyForAliveAnimals,getAverageKidsNumberForAliveAnimals,getAverageLiveDuration,getAverageGenomeList,getAnimalCount,getGrassCount);
+        VBox vBox = new VBox(50, visualRectangularMap,btn,getAverageEnergyForAliveAnimals,
+                getAverageKidsNumberForAliveAnimals,getAverageLiveDuration,
+                getAverageGenomeList,getAnimalCount,getGrassCount);
         vBox.setAlignment(Pos.CENTER_LEFT);
         root.setCenter(vBox);
         return root;
+
     }
 
     public void updateMap(Stage stage) {

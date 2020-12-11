@@ -1,11 +1,7 @@
 package visual;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import config.Config;
 import javafx.event.EventHandler;
-import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -32,6 +28,4 @@ public class VisualRectangularMap extends Parent{
     public Cell getCell(int x, int y) {
         return (Cell)((HBox)rows.getChildren().get(y)).getChildren().get(x);
     }
-
-
 }

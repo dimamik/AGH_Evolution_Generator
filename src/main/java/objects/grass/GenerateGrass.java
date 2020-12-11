@@ -4,7 +4,7 @@ import objects.maps.RectangularMap;
 import random.RandomGenerator;
 import position.Vector2d;
 
-public class GrassGenerator {
+public class GenerateGrass {
     public static boolean generateGrasInJungles(RectangularMap rectangularMap) {
         if (rectangularMap.isJungleFull()) {
             return false;

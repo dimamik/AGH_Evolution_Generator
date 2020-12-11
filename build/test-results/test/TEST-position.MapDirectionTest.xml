@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="position.MapDirectionTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2020-12-08T15:39:08" hostname="DIMAMIK" time="0.025">
+  <properties/>
+  <testcase name="rotateTo()" classname="position.MapDirectionTest" time="0.022"/>
+  <testcase name="toUnitVector()" classname="position.MapDirectionTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

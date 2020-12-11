@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="position.Vector2dTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2020-12-08T15:39:08" hostname="DIMAMIK" time="0.005">
+  <properties/>
+  <testcase name="isInsideTheJungle()" classname="position.Vector2dTest" time="0.003"/>
+  <testcase name="addMirrored()" classname="position.Vector2dTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

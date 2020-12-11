@@ -8,7 +8,6 @@ import static config.Config.ANIMALS_ON_START;
 
 public class Statistics {
 
-
     private long aliveAnimalsCount;
     private long grassCount;
     private final long[] genomeTypesSum;

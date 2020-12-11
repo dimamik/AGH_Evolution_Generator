@@ -34,44 +34,45 @@ public class Vector2d {
     }
 
     private Vector2d mirrorVectorIfOut() {
-        if (y > HEIGHT) {
+        if (y >= HEIGHT) {
             y = 0;
         }
         if (y < 0) {
-            y = HEIGHT-1;
+            y = HEIGHT - 1;
         }
-        if (x > WIDTH) {
+        if (x >= WIDTH) {
             x = 0;
         }
         if (x < 0) {
-            x = WIDTH-1;
+            x = WIDTH - 1;
         }
         return this;
     }
 
     /**
      * Returns true if Vector2d is inside jungles
-     * 
+     *
      * @return
      */
     public boolean isInsideTheJungle() {
 
-        int starting_x = WIDTH/JUNGLE_RATIO;
-        int starting_y = HEIGHT/JUNGLE_RATIO;
-        return getX() >= starting_x && getY()>=starting_y
-                && getX()<=  HEIGHT-starting_x && getY()<=WIDTH-starting_y;
+        int starting_x = WIDTH / JUNGLE_RATIO;
+        int starting_y = HEIGHT / JUNGLE_RATIO;
+        return getX() >= starting_x && getY() >= starting_y
+                && getX() <= HEIGHT - starting_x && getY() <= WIDTH - starting_y;
 
 
     }
 
     /**
      * Adds vectors with MIRRORING
+     *
      * @param vector
      * @return
      */
-    public Vector2d addMirrored(Vector2d vector){
+    public Vector2d addMirrored(Vector2d vector) {
         Vector2d toReturn;
-        toReturn = new Vector2d(x+vector.getX(),y+vector.getY());
+        toReturn = new Vector2d(x + vector.getX(), y + vector.getY());
         return toReturn.mirrorVectorIfOut();
 
     }

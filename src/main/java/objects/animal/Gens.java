@@ -39,22 +39,15 @@ public class Gens {
         int divisionIndex = (int) (Math.random() * (31 + 1));
         int parentGivingTwoGroups = (int) (Math.random() * (1 + 1));
         if (parentGivingTwoGroups == 0) {
-            for (int i = 0; i < divisionIndex; i++) {
-                genSequence[i] = parent1Gens[i];
-            }
-            for (int i = divisionIndex; i < 32; i++) {
-                genSequence[i] = parent2Gens[i];
-            }
+            if (divisionIndex >= 0) System.arraycopy(parent1Gens, 0, genSequence, 0, divisionIndex);
+            if (32 - divisionIndex >= 0)
+                System.arraycopy(parent2Gens, divisionIndex, genSequence, divisionIndex, 32 - divisionIndex);
         } else {
-            for (int i = 0; i < divisionIndex; i++) {
-                genSequence[i] = parent2Gens[i];
-            }
-            for (int i = divisionIndex; i < 32; i++) {
-                genSequence[i] = parent1Gens[i];
-            }
+            if (divisionIndex >= 0) System.arraycopy(parent2Gens, 0, genSequence, 0, divisionIndex);
+            if (32 - divisionIndex >= 0)
+                System.arraycopy(parent1Gens, divisionIndex, genSequence, divisionIndex, 32 - divisionIndex);
         }
         typesInit();
-
         addMissingGens();
 
     }
@@ -86,8 +79,8 @@ public class Gens {
     }
 
     public boolean isCorrect() {
-        for (int i = 0; i < types.length; i++) {
-            if (types[i] <= 0) {
+        for (int type : types) {
+            if (type <= 0) {
                 return false;
             }
         }
@@ -116,6 +109,7 @@ public class Gens {
         return genSequence;
     }
 
+    // TODO ADD THIS FEATURE TO STATISTICS
     public int getDominantGenome() {
         int maxValue = Integer.MIN_VALUE;
         int genome = 0;
@@ -126,7 +120,7 @@ public class Gens {
                 genome = i;
             }
         }
-        return i;
+        return genome;
     }
     public int[] GetGenomeTypes(){
         return types;

@@ -15,14 +15,14 @@ public enum MapDirection {
     MapDirection(int numVal) {
         this.numVal = numVal;
     }
+
     public int getNumVal() {
         return numVal;
     }
 
 
-
-    public MapDirection rotateTo(int value){
-        int num = (this.getNumVal() + value) % 8 ;
+    public MapDirection rotateTo(int value) {
+        int num = (this.getNumVal() + value) % 8;
         return MapDirection.values()[num];
     }
 
