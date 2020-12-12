@@ -122,7 +122,8 @@ public class Gens {
         }
         return genome;
     }
-    public int[] GetGenomeTypes(){
+
+    public int[] GetGenomeTypes() {
         return types;
     }
 }

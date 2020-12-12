@@ -1,8 +1,8 @@
 package objects.grass;
 
-import objects.maps.RectangularMap;
-import random.RandomGenerator;
+import maps.RectangularMap;
 import position.Vector2d;
+import random.RandomGenerator;
 
 public class GenerateGrass {
     public static boolean generateGrasInJungles(RectangularMap rectangularMap) {

@@ -1,33 +1,35 @@
 package statistics;
 
+import maps.RectangularMap;
 import objects.animal.Animal;
-import objects.maps.RectangularMap;
-
-import static config.Config.ANIMALS_ON_START;
 
 
-public class Statistics {
+public class MapStatistics {
 
+    private final long[] genomeTypesSum;
+    private final RectangularMap rectangularMap;
     private long aliveAnimalsCount;
     private long grassCount;
-    private final long[] genomeTypesSum;
     private long sumEnergy;
     private long sumDaysDeadAnimalsLived;
-    private final RectangularMap rectangularMap;
     private long sumAnimalsDead;
     private double sumChildOfAliveAnimal;
 
-    public Statistics(RectangularMap rectangularMap) {
+    public MapStatistics(RectangularMap rectangularMap) {
         genomeTypesSum = new long[8];
         sumEnergy = 0;
         this.rectangularMap = rectangularMap;
         sumDaysDeadAnimalsLived = 0;
         sumAnimalsDead = 0;
-        sumChildOfAliveAnimal = ANIMALS_ON_START;
+        sumChildOfAliveAnimal = 0;
     }
 
     public void addNewChildToStatistics() {
         sumChildOfAliveAnimal += 1;
+    }
+
+    private double roundValue(double value) {
+        return Math.round(value * 100.0) / 100.0;
     }
 
     private void increaseAnimalCount() {
@@ -66,7 +68,7 @@ public class Statistics {
         }
     }
 
-    private void addEnergy(int toAdd) {
+    public void addEnergy(int toAdd) {
         sumEnergy += toAdd;
     }
 
@@ -93,7 +95,7 @@ public class Statistics {
         removeEnergy(animal.getEnergy());
         removeGenomeType(animal);
         sumDaysDeadAnimalsLived += rectangularMap.getCurrentDay();
-        sumChildOfAliveAnimal -= 0.5 * (animal.getChildrenAnimalList().size());
+        sumChildOfAliveAnimal -= 0.5 * (animal.getChildren().size());
     }
 
     public void addGrassToStatistics() {
@@ -107,21 +109,21 @@ public class Statistics {
     //Averages
 
     public double getAverageEnergyForAliveAnimals() {
-        return (double) sumEnergy / aliveAnimalsCount;
+        return roundValue((double) sumEnergy / aliveAnimalsCount);
     }
 
     public double getAverageKidsNumberForAliveAnimals() {
-        return sumChildOfAliveAnimal / aliveAnimalsCount;
+        return roundValue(sumChildOfAliveAnimal / aliveAnimalsCount);
     }
 
     public double getAverageLiveDuration() {
-        return (double) sumDaysDeadAnimalsLived / sumAnimalsDead;
+        return roundValue((double) sumDaysDeadAnimalsLived / sumAnimalsDead);
     }
 
     public double[] getAverageGenomeList() {
         double[] genomeList = new double[8];
         for (int i = 0; i < 8; i++) {
-            genomeList[i] = (double) genomeTypesSum[i] / aliveAnimalsCount;
+            genomeList[i] = roundValue((double) genomeTypesSum[i] / aliveAnimalsCount);
         }
         return genomeList;
     }

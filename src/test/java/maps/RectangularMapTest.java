@@ -41,8 +41,8 @@ class RectangularMapTest {
 
         rectangularMap.addObject(animal1);
         rectangularMap.addObject(animal2);
-        rectangularMap.removeObject(animal1);
-        rectangularMap.removeObject(animal2);
+        rectangularMap.removeObject(animal1.getPosition(), animal1);
+        rectangularMap.removeObject(animal2.getPosition(), animal2);
         assertFalse(rectangularMap.isOccupied(new Vector2d(1, 1)));
         assertFalse(rectangularMap.isOccupied(new Vector2d(3, 3)));
         rectangularMap.addObject(animal3);
@@ -86,7 +86,7 @@ class RectangularMapTest {
         LinkedList<Animal> linkedList = rectangularMap.deleteDead();
         assertEquals(linkedList.size(), 1);
 
-        rectangularMap.removeObject(animal4);
+        rectangularMap.removeObject(animal4.getPosition(), animal4);
         rectangularMap.addObject(animal7);
         LinkedList<Animal> linkedList1 = rectangularMap.deleteDead();
         assertEquals(linkedList1.size(), 0);

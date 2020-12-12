@@ -1,4 +1,4 @@
-package objects.maps;
+package maps;
 
 import objects.AbstractPositionedObject;
 import position.Vector2d;
@@ -17,9 +17,10 @@ public interface IMap {
     /**
      * Removes AbstractPositionedObject from Map
      *
-     * @param object - object to remove
+     * @param position - position where object was last registered on the map
+     * @param object   - object to remove
      */
-    void removeObject(AbstractPositionedObject object);
+    void removeObject(Vector2d position, AbstractPositionedObject object);
 
     /**
      * Returns whether a position on the map is occupied (Either by Animal/Paired

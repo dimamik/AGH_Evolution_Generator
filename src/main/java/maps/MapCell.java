@@ -1,11 +1,11 @@
-package objects.maps;
+package maps;
 
 import objects.AbstractPositionedObject;
 import objects.ObjectStates;
 import objects.animal.Animal;
 import objects.animal.Family;
 import position.Vector2d;
-import statistics.Statistics;
+import statistics.MapStatistics;
 
 import java.util.LinkedList;
 import java.util.Optional;
@@ -15,7 +15,7 @@ import static config.Config.START_ENERGY;
 import static objects.ObjectStates.ANIMAL;
 import static objects.ObjectStates.GRASS;
 
-public class MapCell{
+public class MapCell {
     //TODO listOfObjects can be replaced with HashTable but there is problem with hash()
     private final LinkedList<AbstractPositionedObject> listOfObjects;
     private final Vector2d position;
@@ -42,7 +42,7 @@ public class MapCell{
         listOfObjects.remove(object);
     }
 
-    public LinkedList<Animal> getAllAnimalsAndRemoveDead(Statistics statistics) {
+    public LinkedList<Animal> getAllAnimalsAndRemoveDead(MapStatistics mapStatistics) {
         LinkedList<Animal> listOfAnimals = new LinkedList<>();
         LinkedList<AbstractPositionedObject> listOfObjectsTmp = new LinkedList<>(listOfObjects);
         for (AbstractPositionedObject object : listOfObjectsTmp) {
@@ -51,7 +51,7 @@ public class MapCell{
                 if (animal.getEnergy() <= 0) {
                     listOfObjects.remove(animal);
                     //TODO statistics. can be replaced with observer notifications
-                    statistics.removeAnimalForever(animal);
+                    mapStatistics.removeAnimalForever(animal);
                 } else
                     listOfAnimals.add(animal);
             }
@@ -118,14 +118,15 @@ public class MapCell{
                 '}';
     }
 
-    public void eatGrassByStrongestAnimal(Statistics statistics) {
+    public void eatGrassByStrongestAnimal(MapStatistics mapStatistics) {
         for (AbstractPositionedObject object : listOfObjects) {
             if (object.getState() == GRASS) {
                 if (findStrongestAnimal().isPresent()) {
                     Animal animal = findStrongestAnimal().get();
                     animal.setEnergy(animal.getEnergy() + PLANT_ENERGY);
+                    mapStatistics.addEnergy(PLANT_ENERGY);
                     listOfObjects.remove(object);
-                    statistics.removeGrassFromStatistics();
+                    mapStatistics.removeGrassFromStatistics();
                     return;
                 }
             }

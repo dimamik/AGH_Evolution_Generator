@@ -1,6 +1,6 @@
 package objects.animal;
 
-import objects.maps.RectangularMap;
+import maps.RectangularMap;
 import position.Vector2d;
 import random.RandomGenerator;
 
@@ -14,9 +14,9 @@ public class PairAnimals {
         Gens gens = calculateGens(first, second);
         Vector2d position = generatePositionForChild(rectangularMap);
         Animal tmpAnimal = new Animal(position, first.getEnergy() / 4 + second.getEnergy() / 4, gens);
-        tmpAnimal.addToParentsList(first, second, rectangularMap.getCurrentDay());
-        first.addToChildrenList(tmpAnimal, rectangularMap.getCurrentDay());
-        second.addToChildrenList(tmpAnimal, rectangularMap.getCurrentDay());
+        tmpAnimal.addToParents(first, second, rectangularMap.getCurrentDay());
+        first.addChild(tmpAnimal, rectangularMap.getCurrentDay());
+        second.addChild(tmpAnimal, rectangularMap.getCurrentDay());
         rectangularMap.addObject(tmpAnimal);
     }
 

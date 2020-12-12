@@ -1,4 +1,4 @@
-package objects.maps;
+package maps;
 
 import objects.AbstractPositionedObject;
 import objects.ObjectStates;
@@ -6,7 +6,7 @@ import objects.animal.Animal;
 import objects.animal.Family;
 import objects.grass.GenerateGrass;
 import position.Vector2d;
-import statistics.Statistics;
+import statistics.MapStatistics;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -15,22 +15,22 @@ import java.util.Optional;
 import static config.Config.*;
 import static objects.animal.PairAnimals.pairAnimalsFromFamilyGroup;
 
-public class RectangularMap implements IMap{
+public class RectangularMap implements IMap, PositionChangedObserver {
     int currentDay;
-    Statistics statistics;
+    MapStatistics mapStatistics;
     HashMap<Vector2d, MapCell> cellsHashMap;
 
 
     public RectangularMap() {
         this.currentDay = 0;
         this.cellsHashMap = new HashMap<>();
-        statistics = new Statistics(this);
+        mapStatistics = new MapStatistics(this);
     }
 
     @Override
     public boolean addObject(AbstractPositionedObject object) {
         if (object.getState() == ObjectStates.ANIMAL) {
-            statistics.addAnimalToStatistics((Animal) object);
+            addAnimal((Animal) object);
         }
         if (!cellsHashMap.containsKey(object.getPosition())) {
             MapCell mapCell = new MapCell(object.getPosition());
@@ -42,17 +42,27 @@ public class RectangularMap implements IMap{
         }
         return false;
     }
+
+    private void addAnimal(Animal animal) {
+        mapStatistics.addAnimalToStatistics(animal);
+        animal.addObserver(this);
+    }
+
     @Override
-    public void removeObject(AbstractPositionedObject object) {
+    public void removeObject(Vector2d position, AbstractPositionedObject object) {
         if (object.getState() == ObjectStates.ANIMAL) {
-            statistics.removeAnimalFromStatistics((Animal) object);
+            removeAnimal((Animal) object);
         }
-        Vector2d position = object.getPosition();
         MapCell mapCell = cellsHashMap.get(position);
         mapCell.removeObject(object);
         if (mapCell.isEmpty()) {
             cellsHashMap.remove(position);
         }
+    }
+
+    private void removeAnimal(Animal animal) {
+        mapStatistics.removeAnimalFromStatistics(animal);
+        animal.removeObserver(this);
     }
 
     @Override
@@ -62,7 +72,7 @@ public class RectangularMap implements IMap{
 
     /**
      * Checks Map without Jungle for empty space
-     *
+     * <p>
      * Can be replaced with return cellsHashMap.size() == WIDTH*HEIGHT; But then we can't
      * divide generated grass into two zones, so we need to check every position :(
      * With a bit of Algorithmic it can be replaced with B-Tree
@@ -99,6 +109,7 @@ public class RectangularMap implements IMap{
 
     /**
      * Checks if Jungle is Full
+     *
      * @return true if Jungle is Full, else False
      */
     public boolean isJungleFull() {
@@ -113,14 +124,7 @@ public class RectangularMap implements IMap{
     }
 
 
-    public void moveAnimal(Animal animal) {
-        removeObject(animal);
-        animal.moveAnimal();
-        addObject(animal);
-    }
-
-
-   @Override
+    @Override
     public Optional<AbstractPositionedObject> getObjectFromCell(Vector2d position) {
         if (cellsHashMap.containsKey(position)) {
             return cellsHashMap.get(position).getBestObject();
@@ -140,7 +144,7 @@ public class RectangularMap implements IMap{
         LinkedList<Animal> listOfAnimals = new LinkedList<>();
         LinkedList<MapCell> listOfObjects = new LinkedList<>(cellsHashMap.values());
         for (MapCell currCell : listOfObjects) {
-            listOfAnimals.addAll(currCell.getAllAnimalsAndRemoveDead(statistics));
+            listOfAnimals.addAll(currCell.getAllAnimalsAndRemoveDead(mapStatistics));
             if (currCell.isEmpty()) {
                 cellsHashMap.remove(currCell.getPosition());
             }
@@ -150,14 +154,14 @@ public class RectangularMap implements IMap{
 
     public void moveAllAnimals(LinkedList<Animal> listOfAnimals) {
         for (Animal animal : listOfAnimals) {
-            moveAnimal(animal);
+            animal.moveAnimal();
         }
     }
 
     public void eatByAnimals() {
         LinkedList<MapCell> listOfObjects = new LinkedList<>(cellsHashMap.values());
         for (MapCell mapCell : listOfObjects) {
-            mapCell.eatGrassByStrongestAnimal(statistics);
+            mapCell.eatGrassByStrongestAnimal(mapStatistics);
         }
     }
 
@@ -166,7 +170,7 @@ public class RectangularMap implements IMap{
         for (MapCell mapCell : listOfObjects) {
             Optional<Family> familyGroupOptional = mapCell.pairAnimalsIfPossible();
             if (familyGroupOptional.isPresent()) {
-                statistics.addNewChildToStatistics();
+                mapStatistics.addNewChildToStatistics();
                 pairAnimalsFromFamilyGroup(familyGroupOptional.get(), this);
             }
         }
@@ -174,9 +178,9 @@ public class RectangularMap implements IMap{
 
     public void generateGrass() {
         if (GenerateGrass.generateGrasInJungles(this))
-            statistics.addGrassToStatistics();
+            mapStatistics.addGrassToStatistics();
         if (GenerateGrass.generateGrassOutOfJungles(this))
-            statistics.addGrassToStatistics();
+            mapStatistics.addGrassToStatistics();
     }
 
     public void subtractEnergy(LinkedList<Animal> listOfAnimals) {
@@ -188,7 +192,7 @@ public class RectangularMap implements IMap{
     //TODO Replace with simulation.newDay()
     public void newDay() {
         currentDay++;
-        statistics.decreaseSumEnergyByDayPrice();
+        mapStatistics.decreaseSumEnergyByDayPrice();
         LinkedList<Animal> listOfAnimals = deleteDead();
         moveAllAnimals(listOfAnimals);
         eatByAnimals();
@@ -214,7 +218,13 @@ public class RectangularMap implements IMap{
                 '}';
     }
 
-    public Statistics getStatistics() {
-        return statistics;
+    public MapStatistics getStatistics() {
+        return mapStatistics;
+    }
+
+    @Override
+    public void positionChanged(Vector2d previousPosition, AbstractPositionedObject object) {
+        removeObject(previousPosition, object);
+        addObject(object);
     }
 }

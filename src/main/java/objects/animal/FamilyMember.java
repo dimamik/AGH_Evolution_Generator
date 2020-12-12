@@ -2,8 +2,8 @@ package objects.animal;
 
 public class FamilyMember {
     //TODO Rebuild Family Member to store only needed data
-    private Animal animal;
-    private int dayWhenRelationshipStared;
+    private final Animal animal;
+    private final int dayWhenRelationshipStared;
 
     public FamilyMember(Animal animal, int dayWhenRelationshipStared) {
         this.animal = animal;

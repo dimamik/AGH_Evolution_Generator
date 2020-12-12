@@ -2,8 +2,8 @@ package objects.animal;
 
 public class Family {
 
-    private Animal first;
-    private Animal second;
+    private final Animal first;
+    private final Animal second;
 
     public Family(Animal first, Animal second) {
         this.first = first;

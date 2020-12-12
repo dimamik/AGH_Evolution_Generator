@@ -10,12 +10,12 @@ import java.util.Optional;
 import static config.Config.MAX_SIZE;
 
 public class Cell extends Rectangle {
+    private final VisualRectangularMap visualRectangularMap;
     public int x, y;
-    private VisualRectangularMap visualRectangularMap;
 
     public Cell(int x, int y, VisualRectangularMap visualRectangularMap, Optional<AbstractPositionedObject> object) {
 
-        super( 360 / MAX_SIZE, 360 / MAX_SIZE);
+        super(360 / MAX_SIZE, 360 / MAX_SIZE);
         this.x = x;
         this.y = y;
 

@@ -1,7 +1,7 @@
 package simulation;
 
+import maps.RectangularMap;
 import objects.animal.Animal;
-import objects.maps.RectangularMap;
 
 import java.util.LinkedList;
 
