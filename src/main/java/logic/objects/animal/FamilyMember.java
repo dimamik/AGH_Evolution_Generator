@@ -9,7 +9,8 @@ public class FamilyMember {
 
     /**
      * Can't be rebuild, because needs recursively know about all child's children
-     * @param animal animal with which is the relation
+     *
+     * @param animal                    animal with which is the relation
      * @param dayWhenRelationshipStared day, when relation started
      */
     public FamilyMember(Animal animal, int dayWhenRelationshipStared) {

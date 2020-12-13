@@ -19,7 +19,6 @@ public abstract class AbstractPositionedObject {
     }
 
     /**
-     *
      * @return state of object
      */
     public ObjectStates getState() {

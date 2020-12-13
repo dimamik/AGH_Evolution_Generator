@@ -147,9 +147,9 @@ public class RectangularMap implements IMap, PositionChangedObserver {
         return new LinkedList<>(cellsHashMap.values());
     }
 
-    public LinkedList<Animal> getAllAnimals(){
+    public LinkedList<Animal> getAllAnimals() {
         LinkedList<Animal> listToReturn = new LinkedList<>();
-        for (MapCell cell: getListOfOccupiedCells()){
+        for (MapCell cell : getListOfOccupiedCells()) {
             listToReturn.addAll(cell.getAllAnimals());
         }
         return listToReturn;

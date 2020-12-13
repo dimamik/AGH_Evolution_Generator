@@ -72,7 +72,7 @@ public class MapStatistics {
     }
 
     public void decreaseSumEnergyByDayPrice() {
-        sumEnergy -= (aliveAnimalsCount *MOVE_ENERGY) ;
+        sumEnergy -= (aliveAnimalsCount * MOVE_ENERGY);
         if (sumEnergy < 0)
             sumEnergy = 0;
     }
@@ -132,31 +132,5 @@ public class MapStatistics {
     public long getGrassCount() {
         return grassCount;
     }
-
-//    //Averages
-//
-//    public double getAverageEnergyForAliveAnimals() {
-//        return roundValue((double) sumEnergy / aliveAnimalsCount);
-//    }
-//
-//    public double getAverageKidsNumberForAliveAnimals() {
-//        return roundValue(sumChildOfAliveAnimal / aliveAnimalsCount);
-//    }
-//
-//    public double getAverageLiveDuration() {
-//        return roundValue((double) sumDaysDeadAnimalsLived / sumAnimalsDead);
-//    }
-//
-//    public double[] getAverageGenomeList() {
-//        double[] genomeList = new double[8];
-//        for (int i = 0; i < 8; i++) {
-//            genomeList[i] = roundValue((double) genomeTypesSum[i] / aliveAnimalsCount);
-//        }
-//        return genomeList;
-//    }
-//private double roundValue(double value) {
-//    return Math.round(value * 100.0) / 100.0;
-//}
-//
 
 }

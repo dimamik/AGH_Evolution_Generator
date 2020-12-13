@@ -36,9 +36,9 @@ public class AnimalStatistics {
     /**
      * Returns number of children in past n days
      *
-     * @param n            days
-     * @param currentDay   current day
-     * @return   number of children
+     * @param n          days
+     * @param currentDay current day
+     * @return number of children
      */
     public int getChildrenNumber(int n, int currentDay) {
         int sum = 0;
@@ -54,8 +54,8 @@ public class AnimalStatistics {
     /**
      * Should be wrapped using getAncestorsNumberWrapper()
      *
-     * @param n           days
-     * @param currentDay  current day
+     * @param n          days
+     * @param currentDay current day
      */
     public void getAncestorsNumber(int n, int currentDay, int[] sum) {
         sum[0] += childrenAnimalList.size();

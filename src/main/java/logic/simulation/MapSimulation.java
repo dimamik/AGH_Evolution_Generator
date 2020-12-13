@@ -17,14 +17,6 @@ import static config.Config.*;
 import static logic.objects.animal.PairAnimals.pairAnimalsFromFamilyGroup;
 
 public class MapSimulation {
-    public RectangularMap getRectangularMap() {
-        return rectangularMap;
-    }
-
-    public MapStatistics getMapStatistics() {
-        return mapStatistics;
-    }
-
     private final RectangularMap rectangularMap;
     private final MapStatistics mapStatistics;
     private final MapStatisticsGetter mapStatisticsGetter;
@@ -38,10 +30,9 @@ public class MapSimulation {
         addAnimalsOnStart();
     }
 
-    public int getDayInMapSimulation() {
-        return dayInMapSimulation;
-    }
-
+    /**
+     * Adds animals on Start of Simulation
+     */
     private void addAnimalsOnStart() {
         //TODO Gens can be generated randomly
         int[] genSeq = {0, 0, 0, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 5, 5, 6, 6, 7, 7, 7, 7};
@@ -52,6 +43,11 @@ public class MapSimulation {
         }
     }
 
+    /**
+     * Deletes dead animals
+     *
+     * @return list of alive animals
+     */
     public LinkedList<Animal> deleteDead() {
         LinkedList<Animal> listOfAnimals = new LinkedList<>();
         LinkedList<MapCell> listOfObjects = rectangularMap.getListOfOccupiedCells();
@@ -64,12 +60,20 @@ public class MapSimulation {
         return listOfAnimals;
     }
 
+    /**
+     * Moves all animals
+     *
+     * @param listOfAnimals list of animals to move
+     */
     public void moveAllAnimals(LinkedList<Animal> listOfAnimals) {
         for (Animal animal : listOfAnimals) {
             animal.moveAnimal();
         }
     }
 
+    /**
+     * Animals with highest energy eat the grass if it is present in their cell
+     */
     public void eatByAnimals() {
         LinkedList<MapCell> listOfObjects = rectangularMap.getListOfOccupiedCells();
         for (MapCell mapCell : listOfObjects) {
@@ -77,7 +81,9 @@ public class MapSimulation {
         }
     }
 
-
+    /**
+     * Animals with highest energy are paired if it is possible
+     */
     public void pairAnimals() {
         LinkedList<MapCell> listOfObjects = rectangularMap.getListOfOccupiedCells();
         for (MapCell mapCell : listOfObjects) {
@@ -89,6 +95,9 @@ public class MapSimulation {
         }
     }
 
+    /**
+     * Grass is generated -> 1 in Jungles and 1 outside of Jungles
+     */
     public void generateGrass() {
         if (GenerateGrass.generateGrasInJungles(rectangularMap))
             mapStatistics.addGrassToStatistics();
@@ -96,19 +105,40 @@ public class MapSimulation {
             mapStatistics.addGrassToStatistics();
     }
 
+    /**
+     * Energy is subtracted from every animal from the list
+     *
+     * @param listOfAnimals list of animals
+     */
     public void subtractEnergy(LinkedList<Animal> listOfAnimals) {
         for (Animal animal : listOfAnimals) {
             animal.setEnergy(animal.getEnergy() - MOVE_ENERGY);
         }
     }
 
+    /**
+     * Increases days and decreases sum in statistics
+     */
     public void increaseDay() {
         dayInMapSimulation += 1;
         mapStatistics.decreaseSumEnergyByDayPrice();
     }
 
+    // Accessors and mutators
+
     public MapStatisticsGetter getMapStatisticsGetter() {
         return mapStatisticsGetter;
     }
 
+    public RectangularMap getRectangularMap() {
+        return rectangularMap;
+    }
+
+    public MapStatistics getMapStatistics() {
+        return mapStatistics;
+    }
+
+    public int getDayInMapSimulation() {
+        return dayInMapSimulation;
+    }
 }

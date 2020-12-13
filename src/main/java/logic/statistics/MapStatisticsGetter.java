@@ -7,6 +7,7 @@ import java.util.LinkedList;
 public class MapStatisticsGetter {
     //TODO Add Bindings to handle updates in labels in UI
     MapStatistics mapStatistics;
+
     public MapStatisticsGetter(MapStatistics mapStatistics) {
         this.mapStatistics = mapStatistics;
     }

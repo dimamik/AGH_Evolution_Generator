@@ -57,7 +57,6 @@ public class MapCell {
     }
 
     /**
-     *
      * @return list of all animals on map
      */
     public LinkedList<Animal> getAllAnimals() {
