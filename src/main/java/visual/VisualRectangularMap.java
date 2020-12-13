@@ -6,8 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import maps.RectangularMap;
-import position.Vector2d;
+import logic.maps.RectangularMap;
+import logic.position.Vector2d;
 
 
 public class VisualRectangularMap extends Parent {

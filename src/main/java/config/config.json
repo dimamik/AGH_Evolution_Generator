@@ -1,0 +1,9 @@
+{
+  "WIDTH": 12,
+  "HEIGHT": 12,
+  "START_ENERGY": 10,
+  "JUNGLE_RATIO": 3,
+  "MOVE_ENERGY": 1,
+  "PLANT_ENERGY": 10,
+  "ANIMALS_ON_START": 4
+}

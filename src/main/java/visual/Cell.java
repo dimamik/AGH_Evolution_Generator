@@ -2,8 +2,8 @@ package visual;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import objects.AbstractPositionedObject;
-import objects.ObjectStates;
+import logic.objects.AbstractPositionedObject;
+import logic.objects.ObjectStates;
 
 import java.util.Optional;
 
