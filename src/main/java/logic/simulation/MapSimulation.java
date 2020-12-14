@@ -39,7 +39,7 @@ public class MapSimulation {
         int[] genSeq2 = {0, 0, 7, 1, 1, 7, 2, 0, 2, 0, 2, 3, 7, 7, 7, 4, 4, 4, 4, 0, 7, 0, 7, 0, 5, 5, 6, 6, 7, 7, 7, 7};
 
         for (int i = 0; i < ANIMALS_ON_START; i++) {
-            rectangularMap.addObject(new Animal(RandomGenerator.getRandomPosition(WIDTH, HEIGHT), 200, new Gens(genSeq)));
+            rectangularMap.addObject(new Animal(RandomGenerator.getRandomPosition(WIDTH - 1, HEIGHT - 1), START_ENERGY, new Gens(genSeq)));
         }
     }
 

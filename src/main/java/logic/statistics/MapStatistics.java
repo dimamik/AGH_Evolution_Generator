@@ -1,5 +1,7 @@
 package logic.statistics;
 
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import logic.objects.animal.Animal;
 import logic.simulation.MapSimulation;
 
@@ -10,71 +12,125 @@ public class MapStatistics {
 
     private final long[] genomeTypesSum;
     private final MapSimulation mapSimulation;
-    private long aliveAnimalsCount;
-    private long grassCount;
-    private long sumEnergy;
-    private long sumDaysDeadAnimalsLived;
-    private long sumAnimalsDead;
-    private double sumChildOfAliveAnimal;
+    private final LongProperty aliveAnimalsCount;
+    private final LongProperty grassCount;
+    private final LongProperty sumEnergy;
+    private final LongProperty sumDaysDeadAnimalsLived;
+    private final LongProperty sumAnimalsDead;
+    private final LongProperty sumChildOfAliveAnimal;
 
     public MapStatistics(MapSimulation mapSimulation) {
-        genomeTypesSum = new long[8];
-        sumEnergy = 0;
+        //TODO Add to handle genomeTypesSumProperty
+        genomeTypesSum = new long[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
+        sumEnergy = new SimpleLongProperty(0);
+        grassCount = new SimpleLongProperty(0);
         this.mapSimulation = mapSimulation;
-        sumDaysDeadAnimalsLived = 0;
-        sumAnimalsDead = 0;
-        sumChildOfAliveAnimal = 0;
+        aliveAnimalsCount = new SimpleLongProperty(0);
+        sumDaysDeadAnimalsLived = new SimpleLongProperty(0);
+        sumAnimalsDead = new SimpleLongProperty(0);
+        sumChildOfAliveAnimal = new SimpleLongProperty(0);
     }
 
     public long[] getGenomeTypesSum() {
         return genomeTypesSum;
     }
 
+    public MapSimulation getMapSimulation() {
+        return mapSimulation;
+    }
+
     public long getAliveAnimalsCount() {
+        return aliveAnimalsCount.get();
+    }
+
+    public void setAliveAnimalsCount(long aliveAnimalsCount) {
+        this.aliveAnimalsCount.set(aliveAnimalsCount);
+    }
+
+    public LongProperty aliveAnimalsCountProperty() {
         return aliveAnimalsCount;
     }
 
+    public LongProperty grassCountProperty() {
+        return grassCount;
+    }
+
     public long getSumEnergy() {
+        return sumEnergy.get();
+    }
+
+    public void setSumEnergy(long sumEnergy) {
+        this.sumEnergy.set(sumEnergy);
+    }
+
+    public LongProperty sumEnergyProperty() {
         return sumEnergy;
     }
 
     public long getSumDaysDeadAnimalsLived() {
+        return sumDaysDeadAnimalsLived.get();
+    }
+
+    public void setSumDaysDeadAnimalsLived(long sumDaysDeadAnimalsLived) {
+        this.sumDaysDeadAnimalsLived.set(sumDaysDeadAnimalsLived);
+    }
+
+    public LongProperty sumDaysDeadAnimalsLivedProperty() {
         return sumDaysDeadAnimalsLived;
     }
 
     public long getSumAnimalsDead() {
+        return sumAnimalsDead.get();
+    }
+
+    public void setSumAnimalsDead(long sumAnimalsDead) {
+        this.sumAnimalsDead.set(sumAnimalsDead);
+    }
+
+    public LongProperty sumAnimalsDeadProperty() {
         return sumAnimalsDead;
     }
 
-    public double getSumChildOfAliveAnimal() {
+    public long getSumChildOfAliveAnimal() {
+        return sumChildOfAliveAnimal.get();
+    }
+
+    public void setSumChildOfAliveAnimal(long sumChildOfAliveAnimal) {
+        this.sumChildOfAliveAnimal.set(sumChildOfAliveAnimal);
+    }
+
+    public LongProperty sumChildOfAliveAnimalProperty() {
         return sumChildOfAliveAnimal;
     }
 
     public void addNewChildToStatistics() {
-        sumChildOfAliveAnimal += 1;
+
+        setSumChildOfAliveAnimal(getSumChildOfAliveAnimal() + 1);
+
     }
 
-
     private void increaseAnimalCount() {
-        aliveAnimalsCount += 1;
+        setAliveAnimalsCount(getAliveAnimalsCount() + 1);
     }
 
     private void increaseGrassCount() {
-        grassCount += 1;
+        setGrassCount(getGrassCount() + 1);
+
     }
 
     private void decreaseAnimalCount() {
-        aliveAnimalsCount -= 1;
+        setAliveAnimalsCount(getAliveAnimalsCount() - 1);
+
     }
 
     private void decreaseGrassCount() {
-        grassCount -= 1;
+        setGrassCount(getGrassCount() - 1);
     }
 
     public void decreaseSumEnergyByDayPrice() {
-        sumEnergy -= (aliveAnimalsCount * MOVE_ENERGY);
-        if (sumEnergy < 0)
-            sumEnergy = 0;
+        setSumEnergy(getSumEnergy() - (getAliveAnimalsCount() * MOVE_ENERGY));
+        if (getSumEnergy() < 0)
+            setSumEnergy(0);
     }
 
     private void addGenomeType(Animal animal) {
@@ -92,11 +148,11 @@ public class MapStatistics {
     }
 
     public void addEnergy(int toAdd) {
-        sumEnergy += toAdd;
+        setSumEnergy(getSumEnergy() + toAdd);
     }
 
     private void removeEnergy(int toRemove) {
-        sumEnergy -= toRemove;
+        setSumEnergy(getSumEnergy() - toRemove);
     }
 
     public void addAnimalToStatistics(Animal animal) {
@@ -112,12 +168,13 @@ public class MapStatistics {
     }
 
     public void removeAnimalForever(Animal animal) {
-        sumAnimalsDead += 1;
+        setSumAnimalsDead(getSumAnimalsDead() + 1);
         decreaseAnimalCount();
         removeEnergy(animal.getEnergy());
         removeGenomeType(animal);
-        sumDaysDeadAnimalsLived += mapSimulation.getDayInMapSimulation();
-        sumChildOfAliveAnimal -= 0.5 * (animal.getChildren().size());
+
+        setSumDaysDeadAnimalsLived(getSumDaysDeadAnimalsLived() + mapSimulation.getDayInMapSimulation());
+        setSumChildOfAliveAnimal((long) (getSumChildOfAliveAnimal() - (0.5 * (animal.getChildren().size()))));
     }
 
     public void addGrassToStatistics() {
@@ -128,9 +185,11 @@ public class MapStatistics {
         decreaseGrassCount();
     }
 
-
     public long getGrassCount() {
-        return grassCount;
+        return grassCount.get();
     }
 
+    public void setGrassCount(long grassCount) {
+        this.grassCount.set(grassCount);
+    }
 }

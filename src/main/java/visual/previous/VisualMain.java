@@ -1,4 +1,4 @@
-package visual;
+package visual.previous;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;

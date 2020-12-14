@@ -5,7 +5,7 @@ import logic.objects.animal.Animal;
 import java.util.LinkedList;
 
 public class MapStatisticsGetter {
-    //TODO Add Bindings to handle updates in labels in UI
+    //TODO Rebuild to return properties
     MapStatistics mapStatistics;
 
     public MapStatisticsGetter(MapStatistics mapStatistics) {

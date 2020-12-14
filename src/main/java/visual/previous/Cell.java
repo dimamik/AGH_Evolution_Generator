@@ -1,4 +1,4 @@
-package visual;
+package visual.previous;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;

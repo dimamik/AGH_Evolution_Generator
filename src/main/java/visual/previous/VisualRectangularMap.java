@@ -1,4 +1,4 @@
-package visual;
+package visual.previous;
 
 import config.Config;
 import javafx.event.EventHandler;

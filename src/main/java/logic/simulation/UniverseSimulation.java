@@ -1,6 +1,7 @@
 package logic.simulation;
 
 import logic.objects.animal.Animal;
+import logic.statistics.MapStatistics;
 
 import java.util.LinkedList;
 
@@ -32,5 +33,13 @@ public class UniverseSimulation {
         for (MapSimulation mapSimulation : listOfMapSimulations) {
             newDay(mapSimulation);
         }
+    }
+
+    public LinkedList<MapStatistics> getMapStatistics() {
+        LinkedList<MapStatistics> listToRet = new LinkedList<>();
+        for (MapSimulation mapSimulation : listOfMapSimulations) {
+            listToRet.add(mapSimulation.getMapStatistics());
+        }
+        return listToRet;
     }
 }
