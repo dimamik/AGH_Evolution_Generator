@@ -155,6 +155,7 @@ public class MapSimulation implements ViewObserver {
     @Override
     public void addNewViewObserver(CellsWrapper cellsWrapper) {
         getRectangularMap().addNewViewObserver(cellsWrapper);
+        listOfViewObservers.add(cellsWrapper);
     }
 
     @Override

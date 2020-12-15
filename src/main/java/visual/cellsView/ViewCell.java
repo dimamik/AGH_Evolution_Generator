@@ -17,6 +17,8 @@ public class ViewCell extends Rectangle {
         this.position = position;
 
         setFill(Color.LIGHTGRAY);
+        setStroke(Color.BLACK);
+        setStrokeWidth(0.2);
     }
 
     public void updateCell(AbstractPositionedObject object) {

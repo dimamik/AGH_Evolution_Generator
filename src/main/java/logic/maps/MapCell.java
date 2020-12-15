@@ -48,6 +48,7 @@ public class MapCell {
                 Animal animal = (Animal) object;
                 if (animal.getEnergy() <= 0) {
                     listOfObjects.remove(animal);
+
                     mapStatistics.removeAnimalForever(animal);
                 } else
                     listOfAnimals.add(animal);

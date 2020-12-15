@@ -38,8 +38,12 @@ public class Main extends Application {
         aliveAnimalsCountProperty.textProperty().bind(Bindings.convert(mapStatistics.aliveAnimalsCountProperty()));
 
 
+        Label children = new Label();           // текстовая метка
+        children.textProperty().bind(Bindings.convert(mapStatistics.sumChildOfAliveAnimalProperty()));
+
+
         Label grassCountProperty = new Label();           // текстовая метка
-        aliveAnimalsCountProperty.textProperty().bind(Bindings.convert(mapStatistics.grassCountProperty()));
+        grassCountProperty.textProperty().bind(Bindings.convert(mapStatistics.grassCountProperty()));
 
         ViewRectangularMap viewRectangularMap = new ViewRectangularMap(event -> {
             return;
@@ -48,7 +52,7 @@ public class Main extends Application {
         cellsWrapper.addEventListeners(viewRectangularMap.getArrayOfCells());
 
         universeSimulation.addNewViewObserver(universeSimulation.getMapSimulations().get(0), cellsWrapper);
-        VBox vbox = new VBox(viewRectangularMap, aliveAnimalsCountProperty, grassCountProperty);
+        VBox vbox = new VBox(viewRectangularMap, aliveAnimalsCountProperty, grassCountProperty, children);
 
         Scene scene = new Scene(vbox, 300, 150);
         stage.setScene(scene);
@@ -56,7 +60,7 @@ public class Main extends Application {
         stage.setWidth(500);
         stage.setHeight(500);
 
-        Timeline oneSecondsWonder = new Timeline(new KeyFrame(Duration.millis(1000), (ActionEvent event1) -> {
+        Timeline oneSecondsWonder = new Timeline(new KeyFrame(Duration.millis(10), (ActionEvent event1) -> {
             universeSimulation.newDayInAllSimulations();
         }));
         oneSecondsWonder.setCycleCount(Timeline.INDEFINITE);

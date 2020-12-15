@@ -24,10 +24,10 @@ public class PairAnimals {
     }
 
     private static Vector2d generatePositionForChild(RectangularMap rectangularMap) {
-        Vector2d position = RandomGenerator.getRandomPosition(WIDTH, HEIGHT);
+        Vector2d position = RandomGenerator.getRandomPosition(WIDTH - 1, HEIGHT - 1);
         if (!rectangularMap.isMapFull()) {
             while (rectangularMap.isOccupied(position)) {
-                position = RandomGenerator.getRandomPosition(WIDTH, HEIGHT);
+                position = RandomGenerator.getRandomPosition(WIDTH - 1, HEIGHT - 1);
             }
         }
         return position;
