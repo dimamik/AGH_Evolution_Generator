@@ -3,8 +3,11 @@ package logic.maps;
 import logic.objects.AbstractPositionedObject;
 import logic.objects.ObjectStates;
 import logic.objects.animal.Animal;
+import logic.objects.emptyCellObject.EmptyCellObject;
 import logic.position.Vector2d;
 import logic.statistics.MapStatistics;
+import visual.cellsView.CellsWrapper;
+import visual.cellsView.ViewObserver;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -12,18 +15,41 @@ import java.util.Optional;
 
 import static config.Config.*;
 
-public class RectangularMap implements IMap, PositionChangedObserver {
+public class RectangularMap implements IMap, PositionChangedObserver, ViewObserver {
     MapStatistics mapStatistics;
     HashMap<Vector2d, MapCell> cellsHashMap;
-
+    LinkedList<CellsWrapper> listOfViewObservers;
 
     public RectangularMap(MapStatistics mapStatistics) {
         this.cellsHashMap = new HashMap<>();
         this.mapStatistics = mapStatistics;
+        this.listOfViewObservers = new LinkedList<>();
+    }
+
+    public void addNewViewObserver(CellsWrapper cellsWrapper) {
+        listOfViewObservers.add(cellsWrapper);
+    }
+
+    public void notifyAllObservers(Vector2d position, MapCell mapCell) {
+        if (mapCell == null) {
+            for (CellsWrapper cellsWrapper : listOfViewObservers) {
+                cellsWrapper.updateCell(position, new EmptyCellObject(position));
+            }
+            return;
+        }
+        if (mapCell.getBestObject().isPresent())
+            for (CellsWrapper cellsWrapper : listOfViewObservers) {
+                cellsWrapper.updateCell(position, mapCell.getBestObject().get());
+            }
+        else {
+            for (CellsWrapper cellsWrapper : listOfViewObservers) {
+                cellsWrapper.updateCell(position, new EmptyCellObject(position));
+            }
+        }
     }
 
     @Override
-    public boolean addObject(AbstractPositionedObject object) {
+    public void addObject(AbstractPositionedObject object) {
         if (object.getState() == ObjectStates.ANIMAL) {
             addAnimal((Animal) object);
         }
@@ -31,11 +57,12 @@ public class RectangularMap implements IMap, PositionChangedObserver {
             MapCell mapCell = new MapCell(object.getPosition());
             cellsHashMap.put(object.getPosition(), mapCell);
             mapCell.addObject(object);
-            return true;
+
         } else {
             cellsHashMap.get(object.getPosition()).addObject(object);
         }
-        return false;
+        notifyAllObservers(object.getPosition(),
+                cellsHashMap.get(object.getPosition()));
     }
 
     /**
@@ -55,6 +82,7 @@ public class RectangularMap implements IMap, PositionChangedObserver {
 
     @Override
     public void removeObject(Vector2d position, AbstractPositionedObject object) {
+
         if (object.getState() == ObjectStates.ANIMAL) {
             removeAnimal((Animal) object);
         }
@@ -63,6 +91,8 @@ public class RectangularMap implements IMap, PositionChangedObserver {
         if (mapCell.isEmpty()) {
             cellsHashMap.remove(position);
         }
+        notifyAllObservers(position,
+                mapCell);
     }
 
     /**
@@ -136,6 +166,10 @@ public class RectangularMap implements IMap, PositionChangedObserver {
         } else {
             return Optional.empty();
         }
+    }
+
+    public Optional<MapCell> getMapCellFromPosition(Vector2d position) {
+        return Optional.ofNullable(cellsHashMap.get(position));
     }
 
     /**

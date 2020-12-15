@@ -2,6 +2,7 @@ package logic.simulation;
 
 import logic.objects.animal.Animal;
 import logic.statistics.MapStatistics;
+import visual.cellsView.CellsWrapper;
 
 import java.util.LinkedList;
 
@@ -42,4 +43,13 @@ public class UniverseSimulation {
         }
         return listToRet;
     }
+
+    public LinkedList<MapSimulation> getMapSimulations() {
+        return listOfMapSimulations;
+    }
+
+    public void addNewViewObserver(MapSimulation mapSimulation, CellsWrapper cellsWrapper) {
+        mapSimulation.addNewViewObserver(cellsWrapper);
+    }
+
 }

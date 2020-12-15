@@ -13,9 +13,8 @@ public interface IMap {
      * Adds AbstractPositionedObject to Map
      *
      * @param object - object to add
-     * @return true if added, else false
      */
-    boolean addObject(AbstractPositionedObject object);
+    void addObject(AbstractPositionedObject object);
 
     /**
      * Removes AbstractPositionedObject from Map

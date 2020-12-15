@@ -2,5 +2,6 @@ package logic.objects;
 
 public enum ObjectStates {
     GRASS,
-    ANIMAL
+    ANIMAL,
+    EMPTY_CELL
 }

@@ -5,10 +5,14 @@ import logic.maps.RectangularMap;
 import logic.objects.animal.Animal;
 import logic.objects.animal.Family;
 import logic.objects.animal.Gens;
+import logic.objects.emptyCellObject.EmptyCellObject;
 import logic.objects.grass.GenerateGrass;
+import logic.position.Vector2d;
 import logic.random.RandomGenerator;
 import logic.statistics.MapStatistics;
 import logic.statistics.MapStatisticsGetter;
+import visual.cellsView.CellsWrapper;
+import visual.cellsView.ViewObserver;
 
 import java.util.LinkedList;
 import java.util.Optional;
@@ -16,10 +20,11 @@ import java.util.Optional;
 import static config.Config.*;
 import static logic.objects.animal.PairAnimals.pairAnimalsFromFamilyGroup;
 
-public class MapSimulation {
+public class MapSimulation implements ViewObserver {
     private final RectangularMap rectangularMap;
     private final MapStatistics mapStatistics;
     private final MapStatisticsGetter mapStatisticsGetter;
+    private final LinkedList<CellsWrapper> listOfViewObservers;
     private int dayInMapSimulation;
 
     public MapSimulation() {
@@ -27,8 +32,10 @@ public class MapSimulation {
         mapStatistics = new MapStatistics(this);
         mapStatisticsGetter = new MapStatisticsGetter(mapStatistics);
         this.rectangularMap = new RectangularMap(mapStatistics);
+        this.listOfViewObservers = new LinkedList<>();
         addAnimalsOnStart();
     }
+
 
     /**
      * Adds animals on Start of Simulation
@@ -55,6 +62,7 @@ public class MapSimulation {
             listOfAnimals.addAll(currCell.getAllAnimalsAndRemoveDead(mapStatistics));
             if (currCell.isEmpty()) {
                 rectangularMap.removeCellFromHashMap(currCell.getPosition());
+                notifyAllObservers(currCell.getPosition(), currCell);
             }
         }
         return listOfAnimals;
@@ -113,6 +121,8 @@ public class MapSimulation {
     public void subtractEnergy(LinkedList<Animal> listOfAnimals) {
         for (Animal animal : listOfAnimals) {
             animal.setEnergy(animal.getEnergy() - MOVE_ENERGY);
+            if (getRectangularMap().getMapCellFromPosition(animal.getPosition()).isPresent())
+                notifyAllObservers(animal.getPosition(), getRectangularMap().getMapCellFromPosition(animal.getPosition()).get());
         }
     }
 
@@ -140,5 +150,23 @@ public class MapSimulation {
 
     public int getDayInMapSimulation() {
         return dayInMapSimulation;
+    }
+
+    @Override
+    public void addNewViewObserver(CellsWrapper cellsWrapper) {
+        getRectangularMap().addNewViewObserver(cellsWrapper);
+    }
+
+    @Override
+    public void notifyAllObservers(Vector2d position, MapCell mapCell) {
+        if (mapCell.getBestObject().isPresent())
+            for (CellsWrapper cell : listOfViewObservers) {
+                cell.updateCell(position, mapCell.getBestObject().get());
+            }
+        else {
+            for (CellsWrapper cell : listOfViewObservers) {
+                cell.updateCell(position, new EmptyCellObject(position));
+            }
+        }
     }
 }

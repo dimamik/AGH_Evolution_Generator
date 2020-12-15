@@ -158,6 +158,8 @@ public class MapCell {
         if (findStrongestAnimal().isPresent()) {
             return Optional.of(findStrongestAnimal().get());
         } else {
+            if (listOfObjects.isEmpty())
+                return Optional.empty();
             return Optional.ofNullable(listOfObjects.get(0));
         }
     }
