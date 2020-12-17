@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public class Gens {
 
-    private int[] genSequence;
+    private final int[] genSequence;
     private int[] types;
 
     /**
@@ -20,15 +20,15 @@ public class Gens {
         this.genSequence = genSequence;
         typesInit();
         if (!isCorrect()) {
+            addMissingGens();
             System.out.println("NOT CORRECT DATA in Gens()");
-            this.genSequence = new int[]{0, 0, 0, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 5, 5,
-                    6, 6, 7, 7, 7, 7};
             Arrays.sort(genSequence);
         }
     }
 
+
     /**
-     * Gens generating in case of birth
+     * Gens generating in case of birth (Strict following git requirements, can be done better)
      *
      * @param parent1Gens gens of parent1
      * @param parent2Gens gens of parent2
@@ -58,6 +58,7 @@ public class Gens {
             types[i] += 1;
         }
     }
+
 
     private void addMissingGens() {
         for (int i = 0; i < 8; i++) {

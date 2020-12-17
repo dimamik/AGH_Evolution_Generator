@@ -23,7 +23,6 @@ public class ViewCell extends Rectangle {
 
     public void updateCell(AbstractPositionedObject object) {
         //TODO perform some updates !
-        System.out.println("CELL IS GOING TO BE UPDATED");
         if (object.getState() == EMPTY_CELL) {
             setFill(Color.LIGHTGRAY);
         } else if (object.getState() == ObjectStates.ANIMAL) {

@@ -65,7 +65,7 @@ class MapCellTest {
     @Test
     void getAllAnimalsAndRemoveDead_ShouldUpdateStatisticsRemoveDeadAndReturn() {
         MapSimulation mapSimulation = new MapSimulation();
-        MapStatistics mapStatistics = new MapStatistics(mapSimulation);
+        MapStatistics mapStatistics = new MapStatistics(mapSimulation, dayOfAnimation);
         mapStatistics.addAnimalToStatistics(animal1);
         mapStatistics.addAnimalToStatistics(animal2);
         mapStatistics.addAnimalToStatistics(animal3);
@@ -82,7 +82,7 @@ class MapCellTest {
     @Test
     void pairAnimalsIfPossible() {
         MapSimulation mapSimulation = new MapSimulation();
-        MapStatistics mapStatistics = new MapStatistics(mapSimulation);
+        MapStatistics mapStatistics = new MapStatistics(mapSimulation, dayOfAnimation);
         mapStatistics.addAnimalToStatistics(animal1);
         mapStatistics.addAnimalToStatistics(animal2);
         mapStatistics.addAnimalToStatistics(animal3);
@@ -99,7 +99,7 @@ class MapCellTest {
     @Test
     void eatGrassByStrongestAnimal() {
         MapSimulation mapSimulation = new MapSimulation();
-        MapStatistics mapStatistics = new MapStatistics(mapSimulation);
+        MapStatistics mapStatistics = new MapStatistics(mapSimulation, dayOfAnimation);
         mapStatistics.addAnimalToStatistics(animal1);
         mapStatistics.addAnimalToStatistics(animal2);
         mapStatistics.addAnimalToStatistics(animal3);
@@ -116,7 +116,7 @@ class MapCellTest {
     @Test
     void getBestObject() {
         MapSimulation mapSimulation = new MapSimulation();
-        MapStatistics mapStatistics = new MapStatistics(mapSimulation);
+        MapStatistics mapStatistics = new MapStatistics(mapSimulation, dayOfAnimation);
         mapStatistics.addAnimalToStatistics(animal1);
         mapStatistics.addAnimalToStatistics(animal2);
         mapStatistics.addAnimalToStatistics(animal3);

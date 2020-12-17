@@ -35,7 +35,7 @@ class RectangularMapTest {
     @BeforeEach
     void setUp() {
         mapSimulation = new MapSimulation();
-        mapStatistics = new MapStatistics(mapSimulation);
+        mapStatistics = new MapStatistics(mapSimulation, dayOfAnimation);
         rectangularMap = new RectangularMap(mapStatistics);
         genSeq2 = new int[]{0, 0, 7, 1, 1, 7, 2, 0, 2, 0, 2, 3, 7, 7, 7, 4, 4, 4, 4, 0, 7, 0, 7, 0, 5, 5, 6, 6, 7, 7, 7, 7};
         animal1 = new Animal(new Vector2d(2, 2), 10, new Gens(genSeq2));

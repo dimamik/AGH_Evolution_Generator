@@ -1,16 +1,19 @@
 package logic.statistics;
 
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import logic.objects.animal.Animal;
 import logic.simulation.MapSimulation;
+
+import java.util.LinkedList;
 
 import static config.Config.MOVE_ENERGY;
 
 
 public class MapStatistics {
 
-    private final long[] genomeTypesSum;
+    private final ListProperty<Double> genomeTypesSum;
     private final MapSimulation mapSimulation;
     private final LongProperty aliveAnimalsCount;
     private final LongProperty grassCount;
@@ -19,9 +22,11 @@ public class MapStatistics {
     private final LongProperty sumAnimalsDead;
     private final LongProperty sumChildOfAliveAnimal;
 
+    private final IntegerProperty dayOfAnimation;
+
     public MapStatistics(MapSimulation mapSimulation) {
         //TODO Add to handle genomeTypesSumProperty
-        genomeTypesSum = new long[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
+        genomeTypesSum = new SimpleListProperty<>(FXCollections.observableArrayList(createLinkedListFromArray(new double[]{0, 0, 0, 0, 0, 0, 0, 0})));
         sumEnergy = new SimpleLongProperty(0);
         grassCount = new SimpleLongProperty(0);
         this.mapSimulation = mapSimulation;
@@ -29,10 +34,39 @@ public class MapStatistics {
         sumDaysDeadAnimalsLived = new SimpleLongProperty(0);
         sumAnimalsDead = new SimpleLongProperty(0);
         sumChildOfAliveAnimal = new SimpleLongProperty(0);
+        dayOfAnimation = new SimpleIntegerProperty(0);
     }
 
-    public long[] getGenomeTypesSum() {
+    public ObservableList<Double> getGenomeTypesSum() {
+        return genomeTypesSum.get();
+    }
+
+    public void setGenomeTypesSum(ObservableList<Double> genomeTypesSum) {
+        this.genomeTypesSum.set(genomeTypesSum);
+    }
+
+    public ListProperty<Double> genomeTypesSumProperty() {
         return genomeTypesSum;
+    }
+
+    private LinkedList<Double> createLinkedListFromArray(double[] array) {
+        LinkedList<Double> newList = new LinkedList<>();
+        for (double el : array) {
+            newList.add(el);
+        }
+        return newList;
+    }
+
+    public int getDayOfAnimation() {
+        return dayOfAnimation.get();
+    }
+
+    public void setDayOfAnimation(int dayOfAnimation) {
+        this.dayOfAnimation.set(dayOfAnimation);
+    }
+
+    public IntegerProperty dayOfAnimationProperty() {
+        return dayOfAnimation;
     }
 
     public MapSimulation getMapSimulation() {
@@ -136,14 +170,14 @@ public class MapStatistics {
     private void addGenomeType(Animal animal) {
         int[] types = animal.getGens().GetGenomeTypes();
         for (int i = 0; i < 8; i++) {
-            genomeTypesSum[i] += types[i];
+            getGenomeTypesSum().set(i, getGenomeTypesSum().get(i) + types[i]);
         }
     }
 
     private void removeGenomeType(Animal animal) {
         int[] types = animal.getGens().GetGenomeTypes();
         for (int i = 0; i < 8; i++) {
-            genomeTypesSum[i] -= types[i];
+            getGenomeTypesSum().set(i, getGenomeTypesSum().get(i) - types[i]);
         }
     }
 

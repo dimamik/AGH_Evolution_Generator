@@ -24,7 +24,7 @@ public class ViewRectangularMap extends Parent {
             for (int x = 0; x < WIDTH; x++) {
 
                 arrayOfCells[x][y] = new ViewCell(new Vector2d(x, y));
-//                arrayOfCells.setOnMouseClicked(handler);
+                arrayOfCells[x][y].setOnMouseClicked(handler);
                 row.getChildren().add(arrayOfCells[x][y]);
             }
 

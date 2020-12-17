@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import logic.simulation.UniverseSimulation;
 import logic.statistics.MapStatistics;
+import logic.statistics.MapStatisticsGetter;
 import visual.cellsView.CellsWrapper;
 
 import java.util.LinkedList;
@@ -33,17 +34,17 @@ public class Main extends Application {
         universeSimulation.addNewMap();
         LinkedList<MapStatistics> statisticsLinkedList = universeSimulation.getMapStatistics();
         MapStatistics mapStatistics = statisticsLinkedList.pop();
-
+        MapStatisticsGetter mapStatisticsGetter = new MapStatisticsGetter(mapStatistics);
         Label aliveAnimalsCountProperty = new Label();           // текстовая метка
         aliveAnimalsCountProperty.textProperty().bind(Bindings.convert(mapStatistics.aliveAnimalsCountProperty()));
 
 
         Label children = new Label();           // текстовая метка
-        children.textProperty().bind(Bindings.convert(mapStatistics.sumChildOfAliveAnimalProperty()));
+        children.textProperty().bind(Bindings.convert(mapStatisticsGetter.averageGenomeTypesListProperty()));
 
 
         Label grassCountProperty = new Label();           // текстовая метка
-        grassCountProperty.textProperty().bind(Bindings.convert(mapStatistics.grassCountProperty()));
+        grassCountProperty.textProperty().bind(Bindings.convert(mapStatistics.genomeTypesSumProperty()));
 
         ViewRectangularMap viewRectangularMap = new ViewRectangularMap(event -> {
             return;

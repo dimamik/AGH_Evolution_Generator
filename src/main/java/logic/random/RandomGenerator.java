@@ -1,5 +1,6 @@
 package logic.random;
 
+import logic.objects.animal.Gens;
 import logic.position.Vector2d;
 
 import java.util.Random;
@@ -14,6 +15,7 @@ public class RandomGenerator {
      * @param max - max value
      * @return random number in range [min,max]
      */
+
     public static int getRandomNumberInRange(int min, int max) {
 
         if (min >= max) {
@@ -58,6 +60,14 @@ public class RandomGenerator {
 
             default -> throw new IllegalStateException("Unexpected value: " + zoneNumber);
         };
+    }
+
+    public static Gens generateRandomGenome() {
+        int[] genSeq = new int[32];
+        for (int i = 0; i < 32; i++) {
+            genSeq[i] = RandomGenerator.getRandomNumberInRange(0, 7);
+        }
+        return new Gens(genSeq);
     }
 
 

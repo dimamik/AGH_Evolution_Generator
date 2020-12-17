@@ -4,7 +4,6 @@ import logic.maps.MapCell;
 import logic.maps.RectangularMap;
 import logic.objects.animal.Animal;
 import logic.objects.animal.Family;
-import logic.objects.animal.Gens;
 import logic.objects.emptyCellObject.EmptyCellObject;
 import logic.objects.grass.GenerateGrass;
 import logic.position.Vector2d;
@@ -25,10 +24,8 @@ public class MapSimulation implements ViewObserver {
     private final MapStatistics mapStatistics;
     private final MapStatisticsGetter mapStatisticsGetter;
     private final LinkedList<CellsWrapper> listOfViewObservers;
-    private int dayInMapSimulation;
 
     public MapSimulation() {
-        dayInMapSimulation = 0;
         mapStatistics = new MapStatistics(this);
         mapStatisticsGetter = new MapStatisticsGetter(mapStatistics);
         this.rectangularMap = new RectangularMap(mapStatistics);
@@ -42,11 +39,8 @@ public class MapSimulation implements ViewObserver {
      */
     private void addAnimalsOnStart() {
         //TODO Gens can be generated randomly
-        int[] genSeq = {0, 0, 0, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 5, 5, 6, 6, 7, 7, 7, 7};
-        int[] genSeq2 = {0, 0, 7, 1, 1, 7, 2, 0, 2, 0, 2, 3, 7, 7, 7, 4, 4, 4, 4, 0, 7, 0, 7, 0, 5, 5, 6, 6, 7, 7, 7, 7};
-
         for (int i = 0; i < ANIMALS_ON_START; i++) {
-            rectangularMap.addObject(new Animal(RandomGenerator.getRandomPosition(WIDTH - 1, HEIGHT - 1), START_ENERGY, new Gens(genSeq)));
+            rectangularMap.addObject(new Animal(RandomGenerator.getRandomPosition(WIDTH - 1, HEIGHT - 1), START_ENERGY, RandomGenerator.generateRandomGenome()));
         }
     }
 
@@ -98,7 +92,8 @@ public class MapSimulation implements ViewObserver {
             Optional<Family> familyGroupOptional = mapCell.pairAnimalsIfPossible();
             if (familyGroupOptional.isPresent()) {
                 mapStatistics.addNewChildToStatistics();
-                pairAnimalsFromFamilyGroup(familyGroupOptional.get(), rectangularMap, dayInMapSimulation);
+                pairAnimalsFromFamilyGroup(familyGroupOptional.get(), rectangularMap,
+                        getMapStatistics().getDayOfAnimation());
             }
         }
     }
@@ -130,7 +125,7 @@ public class MapSimulation implements ViewObserver {
      * Increases days and decreases sum in statistics
      */
     public void increaseDay() {
-        dayInMapSimulation += 1;
+        getMapStatistics().setDayOfAnimation(getMapStatistics().getDayOfAnimation() + 1);
         mapStatistics.decreaseSumEnergyByDayPrice();
     }
 
@@ -149,7 +144,7 @@ public class MapSimulation implements ViewObserver {
     }
 
     public int getDayInMapSimulation() {
-        return dayInMapSimulation;
+        return getMapStatistics().getDayOfAnimation();
     }
 
     @Override
