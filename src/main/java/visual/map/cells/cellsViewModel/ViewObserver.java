@@ -1,4 +1,4 @@
-package visual.cellsView;
+package visual.map.cells.cellsViewModel;
 
 import logic.maps.MapCell;
 import logic.position.Vector2d;

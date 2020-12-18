@@ -1,4 +1,4 @@
-package visual.cellsView;
+package visual.map.cells.cellsViewModel;
 
 import logic.objects.AbstractPositionedObject;
 

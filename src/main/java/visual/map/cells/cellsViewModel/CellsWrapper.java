@@ -1,7 +1,8 @@
-package visual.cellsView;
+package visual.map.cells.cellsViewModel;
 
 import logic.objects.AbstractPositionedObject;
 import logic.position.Vector2d;
+import visual.map.cells.cellsView.CellView;
 
 import static config.Config.HEIGHT;
 import static config.Config.WIDTH;
@@ -20,7 +21,7 @@ public class CellsWrapper {
         }
     }
 
-    public void addEventListeners(ViewCell[][] listOfCells) {
+    public void addEventListeners(CellView[][] listOfCells) {
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
                 int finalX = x;

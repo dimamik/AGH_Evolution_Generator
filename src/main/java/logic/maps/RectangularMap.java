@@ -6,8 +6,8 @@ import logic.objects.animal.Animal;
 import logic.objects.emptyCellObject.EmptyCellObject;
 import logic.position.Vector2d;
 import logic.statistics.MapStatistics;
-import visual.cellsView.CellsWrapper;
-import visual.cellsView.ViewObserver;
+import visual.map.cells.cellsViewModel.CellsWrapper;
+import visual.map.cells.cellsViewModel.ViewObserver;
 
 import java.util.HashMap;
 import java.util.LinkedList;

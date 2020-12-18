@@ -10,8 +10,8 @@ import logic.position.Vector2d;
 import logic.random.RandomGenerator;
 import logic.statistics.MapStatistics;
 import logic.statistics.MapStatisticsGetter;
-import visual.cellsView.CellsWrapper;
-import visual.cellsView.ViewObserver;
+import visual.map.cells.cellsViewModel.CellsWrapper;
+import visual.map.cells.cellsViewModel.ViewObserver;
 
 import java.util.LinkedList;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package visual.cellsView;
+package visual.map.cells.cellsViewModel;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;

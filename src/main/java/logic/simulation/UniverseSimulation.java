@@ -2,7 +2,7 @@ package logic.simulation;
 
 import logic.objects.animal.Animal;
 import logic.statistics.MapStatistics;
-import visual.cellsView.CellsWrapper;
+import visual.map.cells.cellsViewModel.CellsWrapper;
 
 import java.util.LinkedList;
 
@@ -12,12 +12,15 @@ public class UniverseSimulation {
     LinkedList<MapSimulation> listOfMapSimulations;
 
     public UniverseSimulation() {
-
         listOfMapSimulations = new LinkedList<>();
     }
 
     public void addNewMap() {
         listOfMapSimulations.add(new MapSimulation());
+    }
+
+    public void removeLastMap() {
+        listOfMapSimulations.pollLast();
     }
 
     private void newDay(MapSimulation mapSimulation) {
@@ -35,6 +38,13 @@ public class UniverseSimulation {
             newDay(mapSimulation);
         }
     }
+
+    public void newDayInNthSimulation(int n) {
+        n -= 1;
+        if (listOfMapSimulations.size() <= n) throw new IllegalArgumentException("No such listOfMapSimulations");
+        newDay(listOfMapSimulations.get(n));
+    }
+
 
     public LinkedList<MapStatistics> getMapStatistics() {
         LinkedList<MapStatistics> listToRet = new LinkedList<>();
