@@ -25,6 +25,6 @@ test {
 }
 javafx {
     version = "15.0.1"
-    modules = [ 'javafx.controls' ]
+    modules = [ 'javafx.controls' , 'javafx.fxml']
 }
-mainClassName = 'visual.VisualMain'
+mainClassName = 'visual.Main'
