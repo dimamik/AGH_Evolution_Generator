@@ -21,9 +21,7 @@ public class AnimalStatisticsView {
     }
 
     /**
-     * Returns genome types list
-     *
-     * @return
+     * @return genome types list
      */
     public int[] getGenome() {
         Gens gensAnimal = getAnimal().getGens();

@@ -16,20 +16,11 @@ public class CellViewModel {
 
     private void initModel() {
         positionedObjectObjectProperty.addListener(new ChangeListener<>() {
-
             @Override
             public void changed(ObservableValue<? extends AbstractPositionedObject> observable, AbstractPositionedObject oldValue, AbstractPositionedObject newValue) {
                 out.set(new CellData(newValue));
             }
         });
-    }
-
-    public AbstractPositionedObject getPositionedObjectObjectProperty() {
-        return positionedObjectObjectProperty.get();
-    }
-
-    public void setPositionedObjectObjectProperty(AbstractPositionedObject positionedObjectObjectProperty) {
-        this.positionedObjectObjectProperty.set(positionedObjectObjectProperty);
     }
 
     public SimpleObjectProperty<AbstractPositionedObject> positionedObjectObjectPropertyProperty() {
@@ -38,6 +29,14 @@ public class CellViewModel {
 
     public SimpleObjectProperty<CellData> outProperty() {
         return out;
+    }
+
+    public AbstractPositionedObject getPositionedObjectObjectProperty() {
+        return positionedObjectObjectProperty.get();
+    }
+
+    public void setPositionedObjectObjectProperty(AbstractPositionedObject positionedObjectObjectProperty) {
+        this.positionedObjectObjectProperty.set(positionedObjectObjectProperty);
     }
 
 }

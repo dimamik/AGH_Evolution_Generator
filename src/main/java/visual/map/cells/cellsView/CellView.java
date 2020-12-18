@@ -10,15 +10,19 @@ import logic.position.Vector2d;
 
 import static config.Config.MAX_SIZE;
 import static config.Config.START_ENERGY;
+import static logic.objects.ObjectStates.ANIMAL;
 import static logic.objects.ObjectStates.EMPTY_CELL;
 
 public class CellView extends Rectangle {
     public Vector2d position;
     public AbstractPositionedObject currentObject;
+    public boolean isDominant;
+
 
     public CellView(Vector2d position) {
-        super(360 / MAX_SIZE, 360 / MAX_SIZE);
+        super(360 / (double) MAX_SIZE, 360 / (double) MAX_SIZE);
         this.position = position;
+        this.isDominant = false;
         currentObject = new EmptyCellObject(position);
         setFill(Color.LIGHTGRAY);
         setStroke(Color.BLACK);
@@ -34,7 +38,6 @@ public class CellView extends Rectangle {
     }
 
     public void updateCell(AbstractPositionedObject object) {
-        //TODO perform some updates !
         setCurrentObject(object);
         if (object.getState() == EMPTY_CELL) {
             setFill(Color.LIGHTGRAY);
@@ -47,6 +50,9 @@ public class CellView extends Rectangle {
             else {
                 setFill(Color.rgb(237, 0, 0));
             }
+            if (isDominant) {
+                setFill(Color.GOLD);
+            }
         } else if (object.getState() == ObjectStates.GRASS) {
             setFill(
                     Color.rgb(0, 86, 24)
@@ -54,4 +60,18 @@ public class CellView extends Rectangle {
         }
     }
 
+    public void makeCellDominant(boolean show) {
+        if (show)
+            setFill(Color.GOLD);
+    }
+
+    public void makeCellSelected() {
+        if (currentObject.getState() == ANIMAL) {
+            Animal animal = (Animal) currentObject;
+            setFill(Color.BLUE);
+            if (animal.getEnergy() <= 0)
+                setFill(Color.GREY);
+        }
+
+    }
 }

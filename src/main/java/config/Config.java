@@ -13,13 +13,14 @@ import java.nio.file.Paths;
  */
 public class Config {
 
-    public static int WIDTH;
-    public static int HEIGHT;
-    public static int START_ENERGY;
-    public static int JUNGLE_RATIO;
-    public static int MOVE_ENERGY;
-    public static int PLANT_ENERGY;
-    public static int ANIMALS_ON_START;
+    public static int WIDTH = 12;
+    public static int HEIGHT = 12;
+    public static int START_ENERGY = 100;
+    public static int JUNGLE_RATIO = 4;
+    public static int MOVE_ENERGY = 1;
+    public static int PLANT_ENERGY = 10;
+    public static int ANIMALS_ON_START = 4;
+    public static int TIMER_DURATION = 10;
 
     public static int MAX_SIZE;
 
@@ -46,6 +47,7 @@ public class Config {
         MOVE_ENERGY = parameters.MOVE_ENERGY;
         PLANT_ENERGY = parameters.PLANT_ENERGY;
         ANIMALS_ON_START = parameters.ANIMALS_ON_START;
+        TIMER_DURATION = parameters.TIMER_DURATION;
         MAX_SIZE = Math.max(WIDTH, HEIGHT);
     }
 
@@ -57,5 +59,6 @@ public class Config {
         public int MOVE_ENERGY;
         public int PLANT_ENERGY;
         public int ANIMALS_ON_START;
+        public int TIMER_DURATION;
     }
 }
