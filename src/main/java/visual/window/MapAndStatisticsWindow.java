@@ -3,12 +3,10 @@ package visual.window;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -16,7 +14,8 @@ import javafx.util.Duration;
 import logic.objects.AbstractPositionedObject;
 import logic.objects.ObjectStates;
 import logic.objects.animal.Animal;
-import logic.statistics.MapStatisticsGetter;
+import logic.statistics.MapStatisticsPropertyGetter;
+import logic.statistics.MapStatisticsWriter;
 import visual.map.ViewRectangularMap;
 import visual.map.cells.cellsView.CellView;
 import visual.map.singleAnimalStatisticsView.AnimalStatisticsView;
@@ -31,29 +30,33 @@ import static javafx.animation.Animation.Status.RUNNING;
 
 public class MapAndStatisticsWindow {
 
+    public static final int LEFT_PADDING = 20;
+
     private final int mapNumber;
     private final ViewRectangularMap mapField;
     private final UniverseViewModel universeViewModel;
     private final Timeline time;
-    private final MapStatisticsGetter mapStatisticsGetter;
+    private final MapStatisticsPropertyGetter mapStatisticsPropertyGetter;
     private final VBox animalFollowingHBox;
-
-    private int dayN;
+    private final MapStatisticsWriter mapStatisticsWriter;
+    private Button stopAnimation;
+    private long dayN;
     private HBox animalStatistics;
     private Animal selectedAnimal;
     private boolean showDominant;
     private Text singleObjectStatistics;
-    private int diedOnDay;
+    private long diedOnDay;
     private VBox buttons;
     private Animal previouslySelected;
+
 
     public MapAndStatisticsWindow(int mapNumber, UniverseViewModel universeViewModel) {
         this.mapNumber = mapNumber;
         this.universeViewModel = universeViewModel;
         this.mapField = universeViewModel.getNthMapView(mapNumber);
         this.mapField.addNewCellListener(this);
-        this.mapStatisticsGetter = universeViewModel.getNthMapStatisticsGetter(mapNumber);
-
+        this.mapStatisticsPropertyGetter = universeViewModel.getNthMapStatisticsGetter(mapNumber);
+        this.mapStatisticsWriter = new MapStatisticsWriter(mapStatisticsPropertyGetter);
         this.animalStatistics = new HBox();
         this.singleObjectStatistics = new Text();
         this.diedOnDay = -1;
@@ -76,8 +79,19 @@ public class MapAndStatisticsWindow {
         );
     }
 
+    private void stopAnimation() {
+        time.stop();
+        stopAnimation.setText("Start Simulation");
+    }
+
+    private void startAnimation() {
+        time.play();
+        stopAnimation.setText("Stop Simulation");
+    }
+
     public void cellWasClicked(AbstractPositionedObject object) {
         if (object.getState() == ObjectStates.ANIMAL) {
+            stopAnimation();
             dayN = (universeViewModel.getUniverseSimulation().getMapSimulations().get(mapNumber - 1).getDayInMapSimulation());
             TextInputDialog dialog = new TextInputDialog(dayN + " by default");
             dialog.setHeaderText("Please enter number of days you want to get statistics from");
@@ -89,37 +103,32 @@ public class MapAndStatisticsWindow {
                 dayN = (universeViewModel.getUniverseSimulation().getMapSimulations().get(mapNumber - 1).getDayInMapSimulation());
             }
             selectedAnimal = (Animal) object;
-            time.stop();
             followAnimal(selectedAnimal);
         }
-
     }
 
     private void followAnimal(Animal animal) {
         hidePreviousSelection();
         showSelectedAnimal(animal);
-
         buttons.getChildren().remove(animalStatistics);
 
         AnimalStatisticsView animalStatisticsView = new AnimalStatisticsView(
                 animal,
                 (universeViewModel.getUniverseSimulation().getMapSimulations().get(mapNumber - 1).getDayInMapSimulation())
         );
-        dayN = (universeViewModel.getUniverseSimulation().getMapSimulations().get(mapNumber - 1).getDayInMapSimulation());
 
         if (animal.getEnergy() == 0 && diedOnDay == -1) {
-            diedOnDay = dayN;
+            diedOnDay = (universeViewModel.getUniverseSimulation().getMapSimulations().get(mapNumber - 1).getDayInMapSimulation());
         } else if (animal.getEnergy() > 0) {
             diedOnDay = -1;
         }
         generateSingleAnimalStatistics(animalStatisticsView, animal);
         animalStatistics = new HBox(singleObjectStatistics, animalFollowingHBox);
-
         buttons.getChildren().add(animalStatistics);
     }
 
     private void showDominantGenomeAnimals() {
-        LinkedList<Animal> listOfAnimals = mapStatisticsGetter.getAnimalsWithDominantGenome(
+        LinkedList<Animal> listOfAnimals = mapStatisticsPropertyGetter.getAnimalsWithDominantGenome(
                 universeViewModel.getUniverseSimulation()
                         .getMapSimulations()
                         .get(mapNumber - 1).getRectangularMap().getAllAnimals()
@@ -137,12 +146,15 @@ public class MapAndStatisticsWindow {
             if (selectedAnimal != null) {
                 followAnimal(selectedAnimal);
             }
+            mapStatisticsWriter.updateStatisticsWriter();
         }));
     }
 
     private void hideDominantAnimals() {
-        LinkedList<Animal> listOfAnimals = mapStatisticsGetter.getAnimalsWithDominantGenome(
-                universeViewModel.getUniverseSimulation().getMapSimulations().get(mapNumber - 1).getRectangularMap().getAllAnimals()
+        LinkedList<Animal> listOfAnimals = mapStatisticsPropertyGetter.getAnimalsWithDominantGenome(
+                universeViewModel.getUniverseSimulation()
+                        .getMapSimulations().get(mapNumber - 1)
+                        .getRectangularMap().getAllAnimals()
         );
         CellView[][] cellsViewArray = mapField.getArrayOfCells();
         for (Animal animal : listOfAnimals) {
@@ -163,7 +175,6 @@ public class MapAndStatisticsWindow {
             cellsViewArray[previouslySelected.getPosition().getX()][previouslySelected.getPosition().getY()]
                     .updateCell(previouslySelected);
         }
-
     }
 
     private VBox getMapStatisticsVBox() {
@@ -176,22 +187,21 @@ public class MapAndStatisticsWindow {
         Label averageKidsNumberForAliveAnimals = new Label();
         Label dayInAnimation = new Label();
 
-        int LEFT_PADDING = 20;
-        sumAnimalsAlive.setPadding(new Insets(0, 0, 0, LEFT_PADDING));
-        sumGrass.setPadding(new Insets(0, 0, 0, LEFT_PADDING));
-        averageGenomeTypesList.setPadding(new Insets(0, 0, 0, LEFT_PADDING));
-        averageEnergyForAliveAnimals.setPadding(new Insets(0, 0, 0, LEFT_PADDING));
-        averageLiveDurationForDeadAnimals.setPadding(new Insets(0, 0, 0, LEFT_PADDING));
-        averageKidsNumberForAliveAnimals.setPadding(new Insets(0, 0, 0, LEFT_PADDING));
-        dayInAnimation.setPadding(new Insets(0, 0, 0, LEFT_PADDING));
+        setPadding(sumAnimalsAlive);
+        setPadding(sumGrass);
+        setPadding(averageGenomeTypesList);
+        setPadding(averageEnergyForAliveAnimals);
+        setPadding(averageLiveDurationForDeadAnimals);
+        setPadding(averageKidsNumberForAliveAnimals);
+        setPadding(dayInAnimation);
 
-        sumAnimalsAlive.textProperty().bind(Bindings.convert(mapStatisticsGetter.sumAnimalsAliveProperty()));
-        dayInAnimation.textProperty().bind(Bindings.convert(mapStatisticsGetter.getMapStatistics().getMapSimulation().getMapStatistics().dayOfAnimationProperty()));
-        sumGrass.textProperty().bind(Bindings.convert(mapStatisticsGetter.sumGrassProperty()));
-        averageGenomeTypesList.textProperty().bind(Bindings.convert(mapStatisticsGetter.averageGenomeTypesListProperty()));
-        averageEnergyForAliveAnimals.textProperty().bind(Bindings.convert(mapStatisticsGetter.averageEnergyForAliveAnimalsProperty()));
-        averageLiveDurationForDeadAnimals.textProperty().bind(Bindings.convert(mapStatisticsGetter.averageLiveDurationForDeadAnimalsProperty()));
-        averageKidsNumberForAliveAnimals.textProperty().bind(Bindings.convert(mapStatisticsGetter.averageKidsNumberForAliveAnimalsProperty()));
+        setBinding(sumAnimalsAlive, (mapStatisticsPropertyGetter.sumAnimalsAliveProperty().asString()));
+        setBinding(dayInAnimation, (mapStatisticsPropertyGetter.getMapStatistics().getMapSimulation().getMapStatistics().dayOfAnimationProperty()));
+        setBinding(sumGrass, (mapStatisticsPropertyGetter.sumGrassProperty()));
+        setBinding(averageGenomeTypesList, (mapStatisticsPropertyGetter.averageGenomeTypesListProperty()));
+        setBinding(averageEnergyForAliveAnimals, (mapStatisticsPropertyGetter.averageEnergyForAliveAnimalsProperty()));
+        setBinding(averageLiveDurationForDeadAnimals, (mapStatisticsPropertyGetter.averageLiveDurationForDeadAnimalsProperty()));
+        setBinding(averageKidsNumberForAliveAnimals, (mapStatisticsPropertyGetter.averageKidsNumberForAliveAnimalsProperty()));
 
         Text animationDayCapture = new Text("Day of animation: \t");
         Text animalsAlive = new Text("Animals alive: \t");
@@ -218,16 +228,22 @@ public class MapAndStatisticsWindow {
                 averageKidsNumberForAliveAnimals);
     }
 
+    private void setPadding(Label label) {
+        label.setPadding(new Insets(0, 0, 0, LEFT_PADDING));
+    }
+
+    private void setBinding(Label label, ObservableValue property) {
+        label.textProperty().bind(Bindings.convert(property));
+    }
+
     private VBox getMapButtonsVBox() {
-        Button stopAnimation = new Button("Stop Simulation");
+        stopAnimation = new Button("Stop Simulation");
         stopAnimation.setOnAction(e -> {
                     if (time.getStatus() == RUNNING) {
-                        time.stop();
-                        stopAnimation.setText("Start Simulation");
+                        stopAnimation();
                         showDominantGenomeAnimals();
                     } else {
-                        time.play();
-                        stopAnimation.setText("Stop Simulation");
+                        startAnimation();
                     }
                 }
 
@@ -259,11 +275,24 @@ public class MapAndStatisticsWindow {
             }
         });
 
+        var statisticsSavedAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        statisticsSavedAlert.setTitle("Statistics");
+        statisticsSavedAlert.setHeaderText("Statistics are successfully written to  src/main/resources/statisticsOut/statistics.json");
+        Button writeStatistics = new Button("Write Statistics");
+        writeStatistics.setTooltip(new Tooltip("Click to save statistics on map\n" +
+                "in statistics.json file"));
+        writeStatistics.setOnAction((event) -> {
+            time.stop();
+            stopAnimation.setText("Start Simulation");
+            mapStatisticsWriter.writeStatistics();
+            statisticsSavedAlert.showAndWait();
+        });
+
         buttons = new VBox(
                 stopAnimation,
                 newDay,
-                showDominantCheck
-
+                showDominantCheck,
+                writeStatistics
         );
         return buttons;
     }
@@ -274,9 +303,9 @@ public class MapAndStatisticsWindow {
                         + "Object type: " + "\n\tANIMAL\n"
                         + "Genome types list:\n"
                         + "\t" + Arrays.toString(animalStatisticsView.getGenome())
-                        + "\nAll Kids in " + dayN + " days\n"
+                        + "\nAll Kids in past " + dayN + " days\n"
                         + "\t" + (animalStatisticsView.getAnimalKidsInNDays(dayN))
-                        + "\nAll Ancestors in " + dayN + " days\n"
+                        + "\nAll Ancestors in past " + dayN + " days\n"
                         + "\t" + (animalStatisticsView.getAnimalAncestorsInNDays(dayN))
                         + "\nEnergy: \n" + "\t" + animal.getEnergy()
         );

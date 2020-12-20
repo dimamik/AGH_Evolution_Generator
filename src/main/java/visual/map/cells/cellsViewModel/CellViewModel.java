@@ -1,8 +1,6 @@
 package visual.map.cells.cellsViewModel;
 
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import logic.objects.AbstractPositionedObject;
 
 public class CellViewModel {
@@ -15,12 +13,7 @@ public class CellViewModel {
     }
 
     private void initModel() {
-        positionedObjectObjectProperty.addListener(new ChangeListener<>() {
-            @Override
-            public void changed(ObservableValue<? extends AbstractPositionedObject> observable, AbstractPositionedObject oldValue, AbstractPositionedObject newValue) {
-                out.set(new CellData(newValue));
-            }
-        });
+        positionedObjectObjectProperty.addListener((observable, oldValue, newValue) -> out.set(new CellData(newValue)));
     }
 
     public SimpleObjectProperty<AbstractPositionedObject> positionedObjectObjectPropertyProperty() {

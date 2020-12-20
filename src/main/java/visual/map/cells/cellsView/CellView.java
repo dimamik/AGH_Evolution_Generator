@@ -14,9 +14,9 @@ import static logic.objects.ObjectStates.ANIMAL;
 import static logic.objects.ObjectStates.EMPTY_CELL;
 
 public class CellView extends Rectangle {
-    public Vector2d position;
+    public final Vector2d position;
+    public final boolean isDominant;
     public AbstractPositionedObject currentObject;
-    public boolean isDominant;
 
 
     public CellView(Vector2d position) {

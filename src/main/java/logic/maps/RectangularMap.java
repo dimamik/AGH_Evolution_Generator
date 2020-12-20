@@ -16,9 +16,9 @@ import java.util.Optional;
 import static config.Config.*;
 
 public class RectangularMap implements IMap, PositionChangedObserver, ViewObserver {
-    MapStatistics mapStatistics;
-    HashMap<Vector2d, MapCell> cellsHashMap;
-    LinkedList<CellsWrapper> listOfViewObservers;
+    private final MapStatistics mapStatistics;
+    private final HashMap<Vector2d, MapCell> cellsHashMap;
+    private final LinkedList<CellsWrapper> listOfViewObservers;
 
     public RectangularMap(MapStatistics mapStatistics) {
         this.cellsHashMap = new HashMap<>();

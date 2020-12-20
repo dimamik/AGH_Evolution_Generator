@@ -15,11 +15,6 @@ public class EmptyCellObject extends AbstractPositionedObject {
     }
 
     @Override
-    public Vector2d getPosition() {
-        return super.getPosition();
-    }
-
-    @Override
     public void setPosition(Vector2d position) {
         super.setPosition(position);
     }

@@ -21,11 +21,10 @@ public class MapStatistics {
     private final LongProperty sumDaysDeadAnimalsLived;
     private final LongProperty sumAnimalsDead;
     private final LongProperty sumChildOfAliveAnimal;
+    private final LongProperty dayOfAnimation;
 
-    private final IntegerProperty dayOfAnimation;
 
     public MapStatistics(MapSimulation mapSimulation) {
-        //TODO Add to handle genomeTypesSumProperty
         genomeTypesSum = new SimpleListProperty<>(FXCollections.observableArrayList(createLinkedListFromArray(new double[]{0, 0, 0, 0, 0, 0, 0, 0})));
         sumEnergy = new SimpleLongProperty(0);
         grassCount = new SimpleLongProperty(0);
@@ -34,7 +33,7 @@ public class MapStatistics {
         sumDaysDeadAnimalsLived = new SimpleLongProperty(0);
         sumAnimalsDead = new SimpleLongProperty(0);
         sumChildOfAliveAnimal = new SimpleLongProperty(0);
-        dayOfAnimation = new SimpleIntegerProperty(0);
+        dayOfAnimation = new SimpleLongProperty(0);
     }
 
     public ObservableList<Double> getGenomeTypesSum() {
@@ -57,16 +56,8 @@ public class MapStatistics {
         return newList;
     }
 
-    public int getDayOfAnimation() {
-        return dayOfAnimation.get();
-    }
-
     public void setDayOfAnimation(int dayOfAnimation) {
         this.dayOfAnimation.set(dayOfAnimation);
-    }
-
-    public IntegerProperty dayOfAnimationProperty() {
-        return dayOfAnimation;
     }
 
     public MapSimulation getMapSimulation() {
@@ -199,6 +190,18 @@ public class MapStatistics {
         decreaseAnimalCount();
         removeGenomeType(animal);
         removeEnergy(animal.getEnergy());
+    }
+
+    public long getDayOfAnimation() {
+        return dayOfAnimation.get();
+    }
+
+    public LongProperty dayOfAnimationProperty() {
+        return dayOfAnimation;
+    }
+
+    public void setDayOfAnimation(long dayOfAnimation) {
+        this.dayOfAnimation.set(dayOfAnimation);
     }
 
     public void removeAnimalForever(Animal animal) {

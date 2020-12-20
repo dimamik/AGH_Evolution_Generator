@@ -12,12 +12,7 @@ import logic.statistics.AnimalStatistics;
 import java.util.LinkedList;
 import java.util.Objects;
 
-import static config.Config.START_ENERGY;
-import static logic.objects.animal.HealthState.*;
-
 public class Animal extends AbstractPositionedObject implements PositionChangedPublisher {
-
-
     private final Gens gens;
     private final AnimalStatistics animalStatistics;
     private final LinkedList<PositionChangedObserver> listOfObservers;
@@ -41,9 +36,11 @@ public class Animal extends AbstractPositionedObject implements PositionChangedP
      * @param child - child to add
      * @param day   - day when relationship started
      */
-    public void addChild(Animal child, int day) {
+    public void addChild(Animal child, long day) {
         animalStatistics.addToChildrenList(child, day);
+
     }
+
 
     /**
      * Takes two parents and children and adds parents to child's list
@@ -52,7 +49,7 @@ public class Animal extends AbstractPositionedObject implements PositionChangedP
      * @param parent2 - second parent
      * @param day     - day when relationship started
      */
-    public void addToParents(Animal parent1, Animal parent2, int day) {
+    public void addToParents(Animal parent1, Animal parent2, long day) {
         animalStatistics.addToParentsList(parent1, parent2, day);
     }
 
@@ -101,13 +98,6 @@ public class Animal extends AbstractPositionedObject implements PositionChangedP
     public Gens getGens() {
         return gens;
     }
-
-    public HealthState getHealthState() {
-        if (energy >= START_ENERGY) return GREEN;
-        if (energy > 2) return YELLOW;
-        else return RED;
-    }
-
 
     public int getDominantGenome() {
         return gens.getDominantGenome();

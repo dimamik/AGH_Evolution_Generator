@@ -2,16 +2,16 @@ package visual.universe;
 
 import logic.simulation.UniverseSimulation;
 import logic.statistics.MapStatistics;
-import logic.statistics.MapStatisticsGetter;
+import logic.statistics.MapStatisticsPropertyGetter;
 import visual.map.ViewRectangularMap;
 import visual.map.cells.cellsViewModel.CellsWrapper;
 
 import java.util.LinkedList;
 
 public class UniverseViewModel {
-    UniverseSimulation universeSimulation;
-    LinkedList<MapStatistics> listOfStatistics;
-    LinkedList<ViewRectangularMap> listOfMapViews;
+    final UniverseSimulation universeSimulation;
+    final LinkedList<MapStatistics> listOfStatistics;
+    final LinkedList<ViewRectangularMap> listOfMapViews;
 
     public UniverseViewModel() {
         universeSimulation = new UniverseSimulation();
@@ -49,7 +49,7 @@ public class UniverseViewModel {
         universeSimulation.addNewViewObserver(universeSimulation.getMapSimulations().get(universeSimulation.getMapSimulations().size() - 1), cellsWrapper);
     }
 
-    public MapStatisticsGetter getNthMapStatisticsGetter(int mapNumber) {
+    public MapStatisticsPropertyGetter getNthMapStatisticsGetter(int mapNumber) {
         mapNumber -= 1;
         if (listOfStatistics.size() <= mapNumber) throw new IllegalArgumentException("There is no second map");
         return listOfStatistics.get(mapNumber).getMapSimulation().getMapStatisticsGetter();
@@ -60,5 +60,4 @@ public class UniverseViewModel {
         if (listOfMapViews.size() <= mapNumber) throw new IllegalArgumentException("There is no second map");
         return listOfMapViews.get(mapNumber);
     }
-
 }

@@ -26,4 +26,6 @@ public interface PositionChangedPublisher {
      * @param newPosition      new position
      */
     void updatePositionChangedObservers(Vector2d previousPosition, Vector2d newPosition);
+
+
 }

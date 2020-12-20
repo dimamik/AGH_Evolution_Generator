@@ -1,21 +1,10 @@
 package logic.objects.animal;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GensTest {
-
-    @BeforeEach
-    void setUp() {
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
 
 
     @Test
@@ -36,7 +25,7 @@ class GensTest {
         Gens genParent2 = new Gens(genSeq2);
         assertTrue(genParent1.isCorrect());
         assertTrue(genParent2.isCorrect());
-        assertFalse(new Gens(genSeq3).isCorrect());
+        assertTrue(new Gens(genSeq3).isCorrect());
     }
 
     @Test

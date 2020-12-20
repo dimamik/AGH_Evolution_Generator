@@ -18,7 +18,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         Config.initialize();
         UniverseViewModel universeViewModel = new UniverseViewModel();
         CheckBox checkIfTwoMaps = new CheckBox("Show two maps");
@@ -38,8 +38,6 @@ public class Main extends Application {
         checkIfTwoMaps.setOnAction((value) -> {
             if (checkIfTwoMaps.isSelected() && universeViewModel.getSize() == 1) {
                 universeViewModel.addNewMap();
-                //TODO Append new Child of My MapWithStatistics
-                System.out.println("HELLO" + scene);
                 window2 = new MapAndStatisticsWindow(
                         2, universeViewModel
                 );
@@ -48,7 +46,6 @@ public class Main extends Application {
                 );
             } else if (!checkIfTwoMaps.isSelected() && universeViewModel.getSize() == 2) {
                 universeViewModel.removeLastMap();
-                System.out.println("HELLO 2");
                 window2.getTime().stop();
                 mainVBox.getChildren().remove(mainVBox.getChildren().size() - 1);
             }

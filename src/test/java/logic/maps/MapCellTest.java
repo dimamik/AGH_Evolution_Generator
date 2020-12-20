@@ -1,6 +1,5 @@
 package logic.maps;
 
-import config.Config;
 import logic.objects.animal.Animal;
 import logic.objects.animal.Family;
 import logic.objects.animal.Gens;
@@ -8,8 +7,6 @@ import logic.objects.grass.Grass;
 import logic.position.Vector2d;
 import logic.simulation.MapSimulation;
 import logic.statistics.MapStatistics;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +15,7 @@ import java.util.Optional;
 
 import static config.Config.PLANT_ENERGY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MapCellTest {
 
@@ -33,10 +30,6 @@ class MapCellTest {
     static Animal animal4;
     static int[] genSeq2;
 
-    @BeforeAll
-    public static void init() {
-        Config.initialize();
-    }
 
     @BeforeEach
     void setUp() {
@@ -51,11 +44,6 @@ class MapCellTest {
         animal4 = new Animal(new Vector2d(2, 2), 0, new Gens(genSeq2));
     }
 
-    @AfterEach
-    void tearDown() {
-
-    }
-
     @Test
     void getPosition() {
         MapCell mapCell1 = new MapCell(new Vector2d(2, 2));
@@ -65,7 +53,7 @@ class MapCellTest {
     @Test
     void getAllAnimalsAndRemoveDead_ShouldUpdateStatisticsRemoveDeadAndReturn() {
         MapSimulation mapSimulation = new MapSimulation();
-        MapStatistics mapStatistics = new MapStatistics(mapSimulation, dayOfAnimation);
+        MapStatistics mapStatistics = new MapStatistics(mapSimulation);
         mapStatistics.addAnimalToStatistics(animal1);
         mapStatistics.addAnimalToStatistics(animal2);
         mapStatistics.addAnimalToStatistics(animal3);
@@ -82,7 +70,7 @@ class MapCellTest {
     @Test
     void pairAnimalsIfPossible() {
         MapSimulation mapSimulation = new MapSimulation();
-        MapStatistics mapStatistics = new MapStatistics(mapSimulation, dayOfAnimation);
+        MapStatistics mapStatistics = new MapStatistics(mapSimulation);
         mapStatistics.addAnimalToStatistics(animal1);
         mapStatistics.addAnimalToStatistics(animal2);
         mapStatistics.addAnimalToStatistics(animal3);
@@ -92,14 +80,14 @@ class MapCellTest {
         mapCell1.addObject(animal3);
         mapCell1.addObject(animal4);
         Optional<Family> optionalFamily = mapCell1.pairAnimalsIfPossible();
-        assertFalse(optionalFamily.isEmpty());
+        assertTrue(optionalFamily.isEmpty());
     }
 
 
     @Test
     void eatGrassByStrongestAnimal() {
         MapSimulation mapSimulation = new MapSimulation();
-        MapStatistics mapStatistics = new MapStatistics(mapSimulation, dayOfAnimation);
+        MapStatistics mapStatistics = new MapStatistics(mapSimulation);
         mapStatistics.addAnimalToStatistics(animal1);
         mapStatistics.addAnimalToStatistics(animal2);
         mapStatistics.addAnimalToStatistics(animal3);
@@ -116,7 +104,7 @@ class MapCellTest {
     @Test
     void getBestObject() {
         MapSimulation mapSimulation = new MapSimulation();
-        MapStatistics mapStatistics = new MapStatistics(mapSimulation, dayOfAnimation);
+        MapStatistics mapStatistics = new MapStatistics(mapSimulation);
         mapStatistics.addAnimalToStatistics(animal1);
         mapStatistics.addAnimalToStatistics(animal2);
         mapStatistics.addAnimalToStatistics(animal3);

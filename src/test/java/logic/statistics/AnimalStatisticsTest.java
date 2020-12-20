@@ -6,7 +6,6 @@ import logic.objects.animal.Animal;
 import logic.objects.animal.Gens;
 import logic.position.Vector2d;
 import logic.simulation.MapSimulation;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +16,7 @@ class AnimalStatisticsTest {
     MapSimulation mapSimulation;
     MapStatistics mapStatistics;
     RectangularMap rectangularMap;
-    MapStatisticsGetter mapStatisticsGetter;
+    MapStatisticsPropertyGetter mapStatisticsPropertyGetter;
     int[] genSeq2;
     Animal animal1;
     Animal animal2;
@@ -39,7 +38,7 @@ class AnimalStatisticsTest {
         mapSimulation = new MapSimulation();
         mapStatistics = mapSimulation.getMapStatistics();
         rectangularMap = mapSimulation.getRectangularMap();
-        mapStatisticsGetter = mapSimulation.getMapStatisticsGetter();
+        mapStatisticsPropertyGetter = mapSimulation.getMapStatisticsGetter();
         genSeq2 = new int[]{0, 0, 7, 1, 1, 7, 2, 0, 2, 0, 2, 3, 7, 7, 7, 4, 4, 4, 4, 0, 7, 0, 7, 0, 5, 5, 6, 6, 7, 7, 7, 7};
         animal1 = new Animal(new Vector2d(2, 2), 10, new Gens(genSeq2));
         animal2 = new Animal(new Vector2d(2, 3), 0, new Gens(genSeq2));
@@ -49,10 +48,6 @@ class AnimalStatisticsTest {
         animal6 = new Animal(new Vector2d(2, 3), 0, new Gens(genSeq2));
         animal7 = new Animal(new Vector2d(2, 2), 20, new Gens(genSeq2));
         animal8 = new Animal(new Vector2d(3, 3), 15, new Gens(genSeq2));
-    }
-
-    @AfterEach
-    void tearDown() {
     }
 
 

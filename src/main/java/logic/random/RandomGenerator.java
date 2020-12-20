@@ -69,6 +69,4 @@ public class RandomGenerator {
         }
         return new Gens(genSeq);
     }
-
-
 }

@@ -7,7 +7,7 @@ import logic.random.RandomGenerator;
 import static config.Config.*;
 
 public class PairAnimals {
-    public static void pairAnimalsFromFamilyGroup(Family family, RectangularMap rectangularMap, int dayOfParing) {
+    public static void pairAnimalsFromFamilyGroup(Family family, RectangularMap rectangularMap, long dayOfParing) {
         Animal first = family.getFirst();
         Animal second = family.getSecond();
         Gens gens = calculateGens(first, second);

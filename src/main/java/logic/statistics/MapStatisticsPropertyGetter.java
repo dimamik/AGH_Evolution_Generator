@@ -8,17 +8,16 @@ import logic.objects.animal.Animal;
 
 import java.util.LinkedList;
 
-public class MapStatisticsGetter {
+public class MapStatisticsPropertyGetter {
     private final LongProperty sumAnimalsAlive;
     private final LongProperty sumGrass;
     private final ListProperty<Double> averageGenomeTypesList;
     private final DoubleProperty averageEnergyForAliveAnimals;
     private final DoubleProperty averageLiveDurationForDeadAnimals;
     private final DoubleProperty averageKidsNumberForAliveAnimals;
-    //TODO Rebuild to Bind to values from MapStatistics
     private MapStatistics mapStatistics;
 
-    public MapStatisticsGetter(MapStatistics mapStatistics) {
+    public MapStatisticsPropertyGetter(MapStatistics mapStatistics) {
         this.mapStatistics = mapStatistics;
         this.sumAnimalsAlive = new SimpleLongProperty(0);
         this.sumGrass = new SimpleLongProperty(0);
@@ -28,6 +27,22 @@ public class MapStatisticsGetter {
         this.averageLiveDurationForDeadAnimals = new SimpleDoubleProperty(0);
         this.averageGenomeTypesList = new SimpleListProperty<>(FXCollections.observableArrayList(createLinkedListFromArray(new double[]{0, 0, 0, 0, 0, 0, 0, 0})));
         addListeners();
+    }
+
+    public double getAverageEnergyForAliveAnimals() {
+        return averageEnergyForAliveAnimals.get();
+    }
+
+    public void setAverageEnergyForAliveAnimals(double averageEnergyForAliveAnimals) {
+        this.averageEnergyForAliveAnimals.set(averageEnergyForAliveAnimals);
+    }
+
+    public double getAverageKidsNumberForAliveAnimals() {
+        return averageKidsNumberForAliveAnimals.get();
+    }
+
+    public void setAverageKidsNumberForAliveAnimals(double averageKidsNumberForAliveAnimals) {
+        this.averageKidsNumberForAliveAnimals.set(averageKidsNumberForAliveAnimals);
     }
 
     public MapStatistics getMapStatistics() {
@@ -78,10 +93,6 @@ public class MapStatisticsGetter {
         return averageEnergyForAliveAnimals;
     }
 
-    public void setAverageEnergyForAliveAnimals(double averageEnergyForAliveAnimals) {
-        this.averageEnergyForAliveAnimals.set(averageEnergyForAliveAnimals);
-    }
-
     public double getAverageLiveDurationForDeadAnimals() {
         return averageLiveDurationForDeadAnimals.get();
     }
@@ -98,10 +109,6 @@ public class MapStatisticsGetter {
         return averageKidsNumberForAliveAnimals;
     }
 
-    public void setAverageKidsNumberForAliveAnimals(double averageKidsNumberForAliveAnimals) {
-        this.averageKidsNumberForAliveAnimals.set(averageKidsNumberForAliveAnimals);
-    }
-
     private LinkedList<Double> createLinkedListFromArray(double[] array) {
         LinkedList<Double> newList = new LinkedList<>();
         for (double el : array) {
@@ -115,49 +122,37 @@ public class MapStatisticsGetter {
     }
 
     private void addAverageEnergyListeners() {
-        getMapStatistics().sumEnergyProperty().addListener((ChangeListener<? super Number>) (observable, oldValue, newValue) -> {
-            setAverageEnergyForAliveAnimals(
-                    roundValue(
-                            (double) getMapStatistics().getSumEnergy() / (double) getMapStatistics().getAliveAnimalsCount())
-            );
-        });
+        getMapStatistics().sumEnergyProperty().addListener((ChangeListener<? super Number>) (observable, oldValue, newValue) -> setAverageEnergyForAliveAnimals(
+                roundValue(
+                        (double) getMapStatistics().getSumEnergy() / (double) getMapStatistics().getAliveAnimalsCount())
+        ));
 
-        getMapStatistics().aliveAnimalsCountProperty().addListener((ChangeListener<? super Number>) (observable, oldValue, newValue) -> {
-            setAverageEnergyForAliveAnimals(
-                    roundValue(
-                            (double) getMapStatistics().getSumEnergy() / (double) getMapStatistics().getAliveAnimalsCount())
-            );
-        });
+        getMapStatistics().aliveAnimalsCountProperty().addListener((ChangeListener<? super Number>) (observable, oldValue, newValue) -> setAverageEnergyForAliveAnimals(
+                roundValue(
+                        (double) getMapStatistics().getSumEnergy() / (double) getMapStatistics().getAliveAnimalsCount())
+        ));
     }
 
     private void addAverageKidsNumberListener() {
-        getMapStatistics().sumChildOfAliveAnimalProperty().addListener((ChangeListener<? super Number>) (observable, oldValue, newValue) -> {
-            setAverageKidsNumberForAliveAnimals(
-                    roundValue(
-                            (double) getMapStatistics().getSumChildOfAliveAnimal() / (double) getMapStatistics().getAliveAnimalsCount())
-            );
-        });
-        getMapStatistics().aliveAnimalsCountProperty().addListener((ChangeListener<? super Number>) (observable, oldValue, newValue) -> {
-            setAverageKidsNumberForAliveAnimals(
-                    roundValue(
-                            (double) getMapStatistics().getSumChildOfAliveAnimal() / (double) getMapStatistics().getAliveAnimalsCount())
-            );
-        });
+        getMapStatistics().sumChildOfAliveAnimalProperty().addListener((ChangeListener<? super Number>) (observable, oldValue, newValue) -> setAverageKidsNumberForAliveAnimals(
+                roundValue(
+                        (double) getMapStatistics().getSumChildOfAliveAnimal() / (double) getMapStatistics().getAliveAnimalsCount())
+        ));
+        getMapStatistics().aliveAnimalsCountProperty().addListener((ChangeListener<? super Number>) (observable, oldValue, newValue) -> setAverageKidsNumberForAliveAnimals(
+                roundValue(
+                        (double) getMapStatistics().getSumChildOfAliveAnimal() / (double) getMapStatistics().getAliveAnimalsCount())
+        ));
     }
 
     private void addAverageLiveDurationListener() {
-        getMapStatistics().sumDaysDeadAnimalsLivedProperty().addListener((ChangeListener<? super Number>) (observable, oldValue, newValue) -> {
-            setAverageLiveDurationForDeadAnimals(
-                    roundValue(
-                            (double) getMapStatistics().getSumDaysDeadAnimalsLived() / (double) getMapStatistics().getSumAnimalsDead())
-            );
-        });
-        getMapStatistics().sumAnimalsDeadProperty().addListener((ChangeListener<? super Number>) (observable, oldValue, newValue) -> {
-            setAverageLiveDurationForDeadAnimals(
-                    roundValue(
-                            (double) getMapStatistics().getSumDaysDeadAnimalsLived() / (double) getMapStatistics().getSumAnimalsDead())
-            );
-        });
+        getMapStatistics().sumDaysDeadAnimalsLivedProperty().addListener((ChangeListener<? super Number>) (observable, oldValue, newValue) -> setAverageLiveDurationForDeadAnimals(
+                roundValue(
+                        (double) getMapStatistics().getSumDaysDeadAnimalsLived() / (double) getMapStatistics().getSumAnimalsDead())
+        ));
+        getMapStatistics().sumAnimalsDeadProperty().addListener((ChangeListener<? super Number>) (observable, oldValue, newValue) -> setAverageLiveDurationForDeadAnimals(
+                roundValue(
+                        (double) getMapStatistics().getSumDaysDeadAnimalsLived() / (double) getMapStatistics().getSumAnimalsDead())
+        ));
     }
 
     private void addGenomesTypeListener() {

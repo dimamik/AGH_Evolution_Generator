@@ -15,7 +15,7 @@ public class Config {
 
     public static int WIDTH = 12;
     public static int HEIGHT = 12;
-    public static int START_ENERGY = 100;
+    public static int START_ENERGY = 10;
     public static int JUNGLE_RATIO = 4;
     public static int MOVE_ENERGY = 1;
     public static int PLANT_ENERGY = 10;

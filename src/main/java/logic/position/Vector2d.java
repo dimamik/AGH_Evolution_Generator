@@ -50,9 +50,7 @@ public class Vector2d {
     }
 
     /**
-     * Returns true if Vector2d is inside jungles
-     *
-     * @return
+     * @return true if Vector2d is inside jungles
      */
     public boolean isInsideTheJungle() {
 
@@ -67,8 +65,8 @@ public class Vector2d {
     /**
      * Adds vectors with MIRRORING
      *
-     * @param vector
-     * @return
+     * @param vector vector to mirror add
+     * @return mirror sum of given two vectors
      */
     public Vector2d addMirrored(Vector2d vector) {
         Vector2d toReturn;

@@ -15,13 +15,13 @@ import static config.Config.WIDTH;
 
 
 public class ViewRectangularMap extends Parent {
-    private final VBox rows = new VBox();
     private final CellView[][] arrayOfCells;
     private final LinkedList<MapAndStatisticsWindow> listenersOfCellChange;
 
     public ViewRectangularMap() {
         arrayOfCells = new CellView[WIDTH][HEIGHT];
         listenersOfCellChange = new LinkedList<>();
+        VBox rows = new VBox();
         for (int y = 0; y < HEIGHT; y++) {
             HBox row = new HBox();
             for (int x = 0; x < WIDTH; x++) {
@@ -29,9 +29,7 @@ public class ViewRectangularMap extends Parent {
                 int finalX = x;
                 int finalY = y;
                 arrayOfCells[x][y].setOnMouseClicked(
-                        event -> {
-                            notifyAllListeners(arrayOfCells[finalX][finalY].getCurrentObject());
-                        }
+                        event -> notifyAllListeners(arrayOfCells[finalX][finalY].getCurrentObject())
                 );
                 row.getChildren().add(arrayOfCells[x][y]);
             }

@@ -5,7 +5,7 @@ package logic.objects.animal;
  */
 public class FamilyMember {
     private final Animal animal;
-    private final int dayWhenRelationshipStared;
+    private final long dayWhenRelationshipStared;
 
     /**
      * Can't be rebuild, because needs recursively know about all child's children
@@ -13,12 +13,12 @@ public class FamilyMember {
      * @param animal                    animal with which is the relation
      * @param dayWhenRelationshipStared day, when relation started
      */
-    public FamilyMember(Animal animal, int dayWhenRelationshipStared) {
+    public FamilyMember(Animal animal, long dayWhenRelationshipStared) {
         this.animal = animal;
         this.dayWhenRelationshipStared = dayWhenRelationshipStared;
     }
 
-    public int getDayWhenRelationshipStared() {
+    public long getDayWhenRelationshipStared() {
         return dayWhenRelationshipStared;
     }
 

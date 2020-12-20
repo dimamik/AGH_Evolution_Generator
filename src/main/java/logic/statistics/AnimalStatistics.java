@@ -6,9 +6,9 @@ import logic.objects.animal.FamilyMember;
 import java.util.LinkedList;
 
 public class AnimalStatistics {
+    final Animal animal;
     private final LinkedList<FamilyMember> childrenAnimalList;
     private final LinkedList<FamilyMember> parentsAnimalList;
-    Animal animal;
 
     public AnimalStatistics(Animal animal) {
         this.animal = animal;
@@ -16,11 +16,11 @@ public class AnimalStatistics {
         parentsAnimalList = new LinkedList<>();
     }
 
-    public void addToChildrenList(Animal child, int day) {
+    public void addToChildrenList(Animal child, long day) {
         childrenAnimalList.add(new FamilyMember(child, day));
     }
 
-    public void addToParentsList(Animal parent1, Animal parent2, int day) {
+    public void addToParentsList(Animal parent1, Animal parent2, long day) {
         parentsAnimalList.add(new FamilyMember(parent1, day));
         parentsAnimalList.add(new FamilyMember(parent2, day));
     }
@@ -40,7 +40,7 @@ public class AnimalStatistics {
      * @param currentDay current day
      * @return number of children
      */
-    public int getChildrenNumber(int n, int currentDay) {
+    public int getChildrenNumber(long n, long currentDay) {
         int sum = 0;
         for (FamilyMember child : childrenAnimalList) {
             if (child.getDayWhenRelationshipStared() >= currentDay - n) {
@@ -57,10 +57,12 @@ public class AnimalStatistics {
      * @param n          days
      * @param currentDay current day
      */
-    public void getAncestorsNumber(int n, int currentDay, int[] sum) {
+    public void getAncestorsNumber(long n, long currentDay, int[] sum) {
+        if (n <= 0)
+            return;
         sum[0] += childrenAnimalList.size();
         for (FamilyMember child : childrenAnimalList) {
-            child.getAnimal().getAnimalStatistics().getAncestorsNumber(n, currentDay, sum);
+            child.getAnimal().getAnimalStatistics().getAncestorsNumber(n - (currentDay - child.getDayWhenRelationshipStared()), currentDay, sum);
         }
     }
 
@@ -71,7 +73,7 @@ public class AnimalStatistics {
      * @param currentDay current Day
      * @return number of ancestors
      */
-    public int getAncestorsNumberWrapper(int n, int currentDay) {
+    public int getAncestorsNumberWrapper(long n, long currentDay) {
         int[] sum = {0};
         getAncestorsNumber(n, currentDay, sum);
         return sum[0];

@@ -16,6 +16,7 @@ dependencies {
     testImplementation(platform('org.junit:junit-bom:5.7.0'))
     testImplementation('org.junit.jupiter:junit-jupiter')
     implementation 'com.google.code.gson:gson:2.8.6'
+    compile group: 'org.apache.clerezza.ext', name: 'org.json.simple', version: '0.4'
 }
 test {
     useJUnitPlatform()

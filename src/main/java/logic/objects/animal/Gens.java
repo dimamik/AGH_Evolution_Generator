@@ -21,7 +21,6 @@ public class Gens {
         typesInit();
         if (!isCorrect()) {
             addMissingGens();
-            System.out.println("NOT CORRECT DATA in Gens()");
             Arrays.sort(genSequence);
         }
     }

@@ -9,7 +9,7 @@ import logic.objects.grass.GenerateGrass;
 import logic.position.Vector2d;
 import logic.random.RandomGenerator;
 import logic.statistics.MapStatistics;
-import logic.statistics.MapStatisticsGetter;
+import logic.statistics.MapStatisticsPropertyGetter;
 import visual.map.cells.cellsViewModel.CellsWrapper;
 import visual.map.cells.cellsViewModel.ViewObserver;
 
@@ -22,12 +22,12 @@ import static logic.objects.animal.PairAnimals.pairAnimalsFromFamilyGroup;
 public class MapSimulation implements ViewObserver {
     private final RectangularMap rectangularMap;
     private final MapStatistics mapStatistics;
-    private final MapStatisticsGetter mapStatisticsGetter;
+    private final MapStatisticsPropertyGetter mapStatisticsPropertyGetter;
     private final LinkedList<CellsWrapper> listOfViewObservers;
 
     public MapSimulation() {
         mapStatistics = new MapStatistics(this);
-        mapStatisticsGetter = new MapStatisticsGetter(mapStatistics);
+        mapStatisticsPropertyGetter = new MapStatisticsPropertyGetter(mapStatistics);
         this.rectangularMap = new RectangularMap(mapStatistics);
         this.listOfViewObservers = new LinkedList<>();
         addAnimalsOnStart();
@@ -38,7 +38,6 @@ public class MapSimulation implements ViewObserver {
      * Adds animals on Start of Simulation
      */
     private void addAnimalsOnStart() {
-        //TODO Gens can be generated randomly
         for (int i = 0; i < ANIMALS_ON_START; i++) {
             rectangularMap.addObject(new Animal(RandomGenerator.getRandomPosition(WIDTH - 1, HEIGHT - 1), START_ENERGY, RandomGenerator.generateRandomGenome()));
         }
@@ -131,8 +130,8 @@ public class MapSimulation implements ViewObserver {
 
     // Accessors and mutators
 
-    public MapStatisticsGetter getMapStatisticsGetter() {
-        return mapStatisticsGetter;
+    public MapStatisticsPropertyGetter getMapStatisticsGetter() {
+        return mapStatisticsPropertyGetter;
     }
 
     public RectangularMap getRectangularMap() {
@@ -143,7 +142,7 @@ public class MapSimulation implements ViewObserver {
         return mapStatistics;
     }
 
-    public int getDayInMapSimulation() {
+    public long getDayInMapSimulation() {
         return getMapStatistics().getDayOfAnimation();
     }
 

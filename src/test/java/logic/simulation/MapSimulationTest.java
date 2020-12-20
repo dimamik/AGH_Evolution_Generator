@@ -7,7 +7,7 @@ import logic.objects.animal.Gens;
 import logic.objects.grass.Grass;
 import logic.position.Vector2d;
 import logic.statistics.MapStatistics;
-import logic.statistics.MapStatisticsGetter;
+import logic.statistics.MapStatisticsPropertyGetter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ class MapSimulationTest {
     MapSimulation mapSimulation;
     MapStatistics mapStatistics;
     RectangularMap rectangularMap;
-    MapStatisticsGetter mapStatisticsGetter;
+    MapStatisticsPropertyGetter mapStatisticsPropertyGetter;
     UniverseSimulation universeSimulation;
     int[] genSeq2;
     Animal animal1;
@@ -32,7 +32,6 @@ class MapSimulationTest {
 
     @BeforeAll
     static void init() {
-        Config.initialize();
         Config.ANIMALS_ON_START = 0;
     }
 
@@ -41,7 +40,7 @@ class MapSimulationTest {
         mapSimulation = new MapSimulation();
         mapStatistics = mapSimulation.getMapStatistics();
         rectangularMap = mapSimulation.getRectangularMap();
-        mapStatisticsGetter = mapSimulation.getMapStatisticsGetter();
+        mapStatisticsPropertyGetter = mapSimulation.getMapStatisticsGetter();
         universeSimulation = new UniverseSimulation();
         genSeq2 = new int[]{0, 0, 7, 1, 1, 7, 2, 0, 2, 0, 2, 3, 7, 7, 7, 4, 4, 4, 4, 0, 7, 0, 7, 0, 5, 5, 6, 6, 7, 7, 7, 7};
         animal1 = new Animal(new Vector2d(2, 2), 10, new Gens(genSeq2));
@@ -81,12 +80,5 @@ class MapSimulationTest {
     void pairAnimals() {
         mapSimulation.pairAnimals();
         assertNotEquals(4, rectangularMap.getAllAnimals().size());
-    }
-
-    @Test
-    void subtractEnergy_andIncreaseDay() {
-        mapSimulation.subtractEnergy(rectangularMap.getAllAnimals());
-        mapSimulation.increaseDay();
-        assertEquals(10.25, mapStatisticsGetter.getAverageEnergyForAliveAnimals());
     }
 }
