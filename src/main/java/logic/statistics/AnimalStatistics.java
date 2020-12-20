@@ -57,17 +57,17 @@ public class AnimalStatistics {
      * @param n          days
      * @param currentDay current day
      */
-    public void getAncestorsNumber(long n, long currentDay, int[] sum) {
+    public void getDescendantsNumber(long n, long currentDay, int[] sum) {
         if (n <= 0)
             return;
         sum[0] += childrenAnimalList.size();
         for (FamilyMember child : childrenAnimalList) {
-            child.getAnimal().getAnimalStatistics().getAncestorsNumber(n - (currentDay - child.getDayWhenRelationshipStared()), currentDay, sum);
+            child.getAnimal().getAnimalStatistics().getDescendantsNumber(n - (currentDay - child.getDayWhenRelationshipStared()), currentDay, sum);
         }
     }
 
     /**
-     * Returns number of ancestors in last n days
+     * Returns number of Descendants in last n days
      *
      * @param n          max days to check in past
      * @param currentDay current Day
@@ -75,7 +75,7 @@ public class AnimalStatistics {
      */
     public int getAncestorsNumberWrapper(long n, long currentDay) {
         int[] sum = {0};
-        getAncestorsNumber(n, currentDay, sum);
+        getDescendantsNumber(n, currentDay, sum);
         return sum[0];
     }
 

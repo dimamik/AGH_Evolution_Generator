@@ -1,6 +1,9 @@
 package logic.statistics;
 
-import javafx.beans.property.*;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import logic.objects.animal.Animal;
@@ -54,10 +57,6 @@ public class MapStatistics {
             newList.add(el);
         }
         return newList;
-    }
-
-    public void setDayOfAnimation(int dayOfAnimation) {
-        this.dayOfAnimation.set(dayOfAnimation);
     }
 
     public MapSimulation getMapSimulation() {
@@ -196,12 +195,16 @@ public class MapStatistics {
         return dayOfAnimation.get();
     }
 
-    public LongProperty dayOfAnimationProperty() {
-        return dayOfAnimation;
+    public void setDayOfAnimation(int dayOfAnimation) {
+        this.dayOfAnimation.set(dayOfAnimation);
     }
 
     public void setDayOfAnimation(long dayOfAnimation) {
         this.dayOfAnimation.set(dayOfAnimation);
+    }
+
+    public LongProperty dayOfAnimationProperty() {
+        return dayOfAnimation;
     }
 
     public void removeAnimalForever(Animal animal) {

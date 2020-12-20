@@ -58,8 +58,6 @@ public class Vector2d {
         int starting_y = HEIGHT / JUNGLE_RATIO;
         return getX() >= starting_x && getY() >= starting_y
                 && getX() <= HEIGHT - starting_x && getY() <= WIDTH - starting_y;
-
-
     }
 
     /**

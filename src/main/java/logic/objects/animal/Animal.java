@@ -6,11 +6,12 @@ import logic.objects.ObjectStates;
 import logic.objects.PositionChangedPublisher;
 import logic.position.MapDirection;
 import logic.position.Vector2d;
-import logic.random.RandomGenerator;
 import logic.statistics.AnimalStatistics;
 
 import java.util.LinkedList;
 import java.util.Objects;
+
+import static logic.random.RandomGenerator.generateRandomMapDirection;
 
 public class Animal extends AbstractPositionedObject implements PositionChangedPublisher {
     private final Gens gens;
@@ -24,7 +25,7 @@ public class Animal extends AbstractPositionedObject implements PositionChangedP
         super(position);
         this.energy = energy;
         this.gens = gens;
-        this.orientation = MapDirection.values()[RandomGenerator.getRandomNumberInRange(0, 7)];
+        this.orientation = generateRandomMapDirection();
         this.state = ObjectStates.ANIMAL;
         animalStatistics = new AnimalStatistics(this);
         listOfObservers = new LinkedList<>();

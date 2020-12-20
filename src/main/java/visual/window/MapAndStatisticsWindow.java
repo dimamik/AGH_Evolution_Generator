@@ -35,10 +35,10 @@ public class MapAndStatisticsWindow {
     private final int mapNumber;
     private final ViewRectangularMap mapField;
     private final UniverseViewModel universeViewModel;
-    private final Timeline time;
     private final MapStatisticsPropertyGetter mapStatisticsPropertyGetter;
     private final VBox animalFollowingHBox;
     private final MapStatisticsWriter mapStatisticsWriter;
+    private Timeline time;
     private Button stopAnimation;
     private long dayN;
     private HBox animalStatistics;
@@ -61,9 +61,8 @@ public class MapAndStatisticsWindow {
         this.singleObjectStatistics = new Text();
         this.diedOnDay = -1;
         this.animalFollowingHBox = new VBox();
-        this.time = setTimer();
-        this.time.setCycleCount(Timeline.INDEFINITE);
-        this.time.play();
+        setTimer();
+        universeViewModel.getUniverseSimulation().getMapSimulations().get(mapNumber - 1).addAnimalsOnStart();
     }
 
     public Timeline getTime() {
@@ -77,16 +76,6 @@ public class MapAndStatisticsWindow {
                 universeViewModel.getNthMapView(mapNumber),
                 getMapStatisticsVBox()
         );
-    }
-
-    private void stopAnimation() {
-        time.stop();
-        stopAnimation.setText("Start Simulation");
-    }
-
-    private void startAnimation() {
-        time.play();
-        stopAnimation.setText("Stop Simulation");
     }
 
     public void cellWasClicked(AbstractPositionedObject object) {
@@ -127,6 +116,16 @@ public class MapAndStatisticsWindow {
         buttons.getChildren().add(animalStatistics);
     }
 
+    private void stopAnimation() {
+        time.stop();
+        stopAnimation.setText("Start Simulation");
+    }
+
+    private void startAnimation() {
+        time.play();
+        stopAnimation.setText("Stop Simulation");
+    }
+
     private void showDominantGenomeAnimals() {
         LinkedList<Animal> listOfAnimals = mapStatisticsPropertyGetter.getAnimalsWithDominantGenome(
                 universeViewModel.getUniverseSimulation()
@@ -140,14 +139,15 @@ public class MapAndStatisticsWindow {
         }
     }
 
-    private Timeline setTimer() {
-        return new Timeline(new KeyFrame(Duration.millis(TIMER_DURATION), (ActionEvent event1) -> {
+    private void setTimer() {
+        this.time = new Timeline(new KeyFrame(Duration.millis(TIMER_DURATION), (ActionEvent event1) -> {
             universeViewModel.getUniverseSimulation().newDayInNthSimulation(mapNumber);
             if (selectedAnimal != null) {
                 followAnimal(selectedAnimal);
             }
             mapStatisticsWriter.updateStatisticsWriter();
         }));
+        this.time.setCycleCount(Timeline.INDEFINITE);
     }
 
     private void hideDominantAnimals() {
@@ -237,7 +237,7 @@ public class MapAndStatisticsWindow {
     }
 
     private VBox getMapButtonsVBox() {
-        stopAnimation = new Button("Stop Simulation");
+        stopAnimation = new Button("Start Simulation");
         stopAnimation.setOnAction(e -> {
                     if (time.getStatus() == RUNNING) {
                         stopAnimation();
@@ -305,8 +305,8 @@ public class MapAndStatisticsWindow {
                         + "\t" + Arrays.toString(animalStatisticsView.getGenome())
                         + "\nAll Kids in past " + dayN + " days\n"
                         + "\t" + (animalStatisticsView.getAnimalKidsInNDays(dayN))
-                        + "\nAll Ancestors in past " + dayN + " days\n"
-                        + "\t" + (animalStatisticsView.getAnimalAncestorsInNDays(dayN))
+                        + "\nAll Descendants in past " + dayN + " days\n"
+                        + "\t" + (animalStatisticsView.getAnimalDescendantsInNDays(dayN))
                         + "\nEnergy: \n" + "\t" + animal.getEnergy()
         );
 

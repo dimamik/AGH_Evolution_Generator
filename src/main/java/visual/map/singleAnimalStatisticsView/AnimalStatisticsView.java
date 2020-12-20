@@ -33,7 +33,7 @@ public class AnimalStatisticsView {
         return getAnimal().getAnimalStatistics().getChildrenNumber(n, currentDay);
     }
 
-    public double getAnimalAncestorsInNDays(long n) {
+    public double getAnimalDescendantsInNDays(long n) {
         return getAnimal().getAnimalStatistics().getAncestorsNumberWrapper(n, currentDay);
     }
 }

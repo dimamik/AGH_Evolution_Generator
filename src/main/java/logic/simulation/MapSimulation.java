@@ -30,17 +30,25 @@ public class MapSimulation implements ViewObserver {
         mapStatisticsPropertyGetter = new MapStatisticsPropertyGetter(mapStatistics);
         this.rectangularMap = new RectangularMap(mapStatistics);
         this.listOfViewObservers = new LinkedList<>();
-        addAnimalsOnStart();
     }
-
 
     /**
      * Adds animals on Start of Simulation
      */
-    private void addAnimalsOnStart() {
-        for (int i = 0; i < ANIMALS_ON_START; i++) {
-            rectangularMap.addObject(new Animal(RandomGenerator.getRandomPosition(WIDTH - 1, HEIGHT - 1), START_ENERGY, RandomGenerator.generateRandomGenome()));
+    public void addAnimalsOnStart() {
+        //First generate list of random positions
+        LinkedList<Vector2d> listOfPositions = new LinkedList<>();
+        while (listOfPositions.size() < ANIMALS_ON_START) {
+            Vector2d randomPosition = RandomGenerator.getRandomPosition(WIDTH - 1, HEIGHT - 1);
+            if (!listOfPositions.contains(randomPosition)) {
+                listOfPositions.add(randomPosition);
+            }
         }
+        //Then allocate animals
+        for (Vector2d position : listOfPositions) {
+            rectangularMap.addObject(new Animal(position, START_ENERGY, RandomGenerator.generateRandomGenome()));
+        }
+
     }
 
     /**

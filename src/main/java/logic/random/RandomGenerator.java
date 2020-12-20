@@ -1,6 +1,7 @@
 package logic.random;
 
 import logic.objects.animal.Gens;
+import logic.position.MapDirection;
 import logic.position.Vector2d;
 
 import java.util.Random;
@@ -18,7 +19,7 @@ public class RandomGenerator {
 
     public static int getRandomNumberInRange(int min, int max) {
 
-        if (min >= max) {
+        if (min > max) {
             throw new IllegalArgumentException("max must be greater than min");
         }
 
@@ -68,5 +69,9 @@ public class RandomGenerator {
             genSeq[i] = RandomGenerator.getRandomNumberInRange(0, 7);
         }
         return new Gens(genSeq);
+    }
+
+    public static MapDirection generateRandomMapDirection() {
+        return MapDirection.values()[RandomGenerator.getRandomNumberInRange(0, 7)];
     }
 }
