@@ -4,7 +4,7 @@ import logic.objects.animal.Animal;
 import logic.objects.animal.Gens;
 
 public class AnimalStatisticsView {
-    final long currentDay;
+    private final long currentDay;
     private Animal animal;
 
     public AnimalStatisticsView(Animal animal, long day) {

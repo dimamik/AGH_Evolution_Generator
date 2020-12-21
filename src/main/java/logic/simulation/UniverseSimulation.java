@@ -9,7 +9,7 @@ import java.util.LinkedList;
 public class UniverseSimulation {
 
 
-    final LinkedList<MapSimulation> listOfMapSimulations;
+    private final LinkedList<MapSimulation> listOfMapSimulations;
 
     public UniverseSimulation() {
         listOfMapSimulations = new LinkedList<>();

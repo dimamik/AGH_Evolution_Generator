@@ -78,6 +78,10 @@ class MapSimulationTest {
 
     @Test
     void pairAnimals() {
+        animal1 = new Animal(new Vector2d(2, 2), 10, new Gens(genSeq2));
+        animal3 = new Animal(new Vector2d(2, 2), 20, new Gens(genSeq2));
+        rectangularMap.addObject(animal1);
+        rectangularMap.addObject(animal3);
         mapSimulation.pairAnimals();
         assertNotEquals(4, rectangularMap.getAllAnimals().size());
     }

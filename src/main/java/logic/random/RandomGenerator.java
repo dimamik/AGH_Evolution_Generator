@@ -38,8 +38,8 @@ public class RandomGenerator {
     }
 
     public static Vector2d getRandomPositionInsideJungles() {
-        int x = getRandomNumberInRange(WIDTH / JUNGLE_RATIO, WIDTH - (WIDTH / JUNGLE_RATIO) - 1);
-        int y = getRandomNumberInRange(HEIGHT / JUNGLE_RATIO, HEIGHT - (HEIGHT / JUNGLE_RATIO) - 1);
+        int x = getRandomNumberInRange(JUNGLE_X_START, WIDTH - (JUNGLE_X_START) - 1);
+        int y = getRandomNumberInRange(JUNGLE_Y_START, HEIGHT - (JUNGLE_Y_START) - 1);
         return new Vector2d(x, y);
     }
 
@@ -49,15 +49,15 @@ public class RandomGenerator {
         int y;
         zoneNumber = getRandomNumberInRange(1, 4);
         return switch (zoneNumber) {
-            case 1 -> getRandomPositionInsideBorders(0, WIDTH / JUNGLE_RATIO - 1, 0, HEIGHT - 1);
+            case 1 -> getRandomPositionInsideBorders(0, JUNGLE_X_START - 1, 0, HEIGHT - 1);
 
-            case 2 -> getRandomPositionInsideBorders(WIDTH / JUNGLE_RATIO, WIDTH - (WIDTH / JUNGLE_RATIO),
-                    0, HEIGHT / JUNGLE_RATIO - 1);
+            case 2 -> getRandomPositionInsideBorders(JUNGLE_X_START, WIDTH - (JUNGLE_X_START),
+                    0, JUNGLE_Y_START - 1);
 
-            case 3 -> getRandomPositionInsideBorders(WIDTH / JUNGLE_RATIO, WIDTH - (WIDTH / JUNGLE_RATIO),
-                    HEIGHT - (HEIGHT / JUNGLE_RATIO), HEIGHT - 1);
+            case 3 -> getRandomPositionInsideBorders(JUNGLE_X_START, WIDTH - (JUNGLE_X_START),
+                    HEIGHT - (JUNGLE_Y_START), HEIGHT - 1);
 
-            case 4 -> getRandomPositionInsideBorders(WIDTH - (WIDTH / JUNGLE_RATIO), WIDTH - 1, 0, HEIGHT - 1);
+            case 4 -> getRandomPositionInsideBorders(WIDTH - (JUNGLE_X_START), WIDTH - 1, 0, HEIGHT - 1);
 
             default -> throw new IllegalStateException("Unexpected value: " + zoneNumber);
         };

@@ -10,8 +10,7 @@ import visual.universe.UniverseViewModel;
 import visual.window.MapAndStatisticsWindow;
 
 public class Main extends Application {
-    MapAndStatisticsWindow window1;
-    MapAndStatisticsWindow window2;
+    private MapAndStatisticsWindow window2;
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -26,9 +25,10 @@ public class Main extends Application {
 
         VBox mainVBox = new VBox(15, checkIfTwoMaps);
         Scene scene = new Scene(mainVBox, 900, 800);
+        stage.setTitle("Evolution Simulator");
         stage.setScene(scene);
 
-        window1 = new MapAndStatisticsWindow(
+        MapAndStatisticsWindow window1 = new MapAndStatisticsWindow(
                 1, universeViewModel
         );
         mainVBox.getChildren().add(

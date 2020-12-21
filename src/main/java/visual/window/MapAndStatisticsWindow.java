@@ -25,13 +25,11 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Optional;
 
+import static config.Config.LEFT_PADDING;
 import static config.Config.TIMER_DURATION;
 import static javafx.animation.Animation.Status.RUNNING;
 
 public class MapAndStatisticsWindow {
-
-    public static final int LEFT_PADDING = 20;
-
     private final int mapNumber;
     private final ViewRectangularMap mapField;
     private final UniverseViewModel universeViewModel;

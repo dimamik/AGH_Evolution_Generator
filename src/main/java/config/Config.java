@@ -13,6 +13,7 @@ import java.nio.file.Paths;
  */
 public class Config {
 
+    public static final int LEFT_PADDING = 20;
     public static int WIDTH = 12;
     public static int HEIGHT = 12;
     public static int START_ENERGY = 10;
@@ -21,10 +22,9 @@ public class Config {
     public static int PLANT_ENERGY = 10;
     public static int ANIMALS_ON_START = 4;
     public static int TIMER_DURATION = 10;
-
-    public static int MAX_SIZE;
-
-    //TODO Add Jungle Parameters
+    public static int MAX_SIZE = HEIGHT;
+    public static int JUNGLE_X_START = WIDTH / JUNGLE_RATIO;
+    public static int JUNGLE_Y_START = HEIGHT / JUNGLE_RATIO;
 
     public static void initialize() {
         Gson gson = new Gson();
@@ -49,9 +49,11 @@ public class Config {
         ANIMALS_ON_START = parameters.ANIMALS_ON_START;
         TIMER_DURATION = parameters.TIMER_DURATION;
         MAX_SIZE = Math.max(WIDTH, HEIGHT);
+        JUNGLE_X_START = WIDTH / JUNGLE_RATIO;
+        JUNGLE_Y_START = HEIGHT / JUNGLE_RATIO;
     }
 
-    static class Parameters {
+    private static class Parameters {
         public int WIDTH;
         public int HEIGHT;
         public int START_ENERGY;

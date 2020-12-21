@@ -27,7 +27,7 @@ public class Animal extends AbstractPositionedObject implements PositionChangedP
         this.gens = gens;
         this.orientation = generateRandomMapDirection();
         this.state = ObjectStates.ANIMAL;
-        animalStatistics = new AnimalStatistics(this);
+        animalStatistics = new AnimalStatistics();
         listOfObservers = new LinkedList<>();
     }
 

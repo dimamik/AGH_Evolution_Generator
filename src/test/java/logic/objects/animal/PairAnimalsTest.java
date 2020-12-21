@@ -14,19 +14,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PairAnimalsTest {
-    MapSimulation mapSimulation;
-    MapStatistics mapStatistics;
-    RectangularMap rectangularMap;
-    int[] genSeq2;
-    Animal animal1;
-    Animal animal2;
-    Animal animal3;
-    Animal animal4;
-
+    private MapStatistics mapStatistics;
+    private RectangularMap rectangularMap;
+    private int[] genSeq2;
+    private Animal animal1;
+    private Animal animal2;
+    private Animal animal3;
+    private Animal animal4;
 
     @BeforeEach
     void setUp() {
-        mapSimulation = new MapSimulation();
+        MapSimulation mapSimulation = new MapSimulation();
         mapStatistics = new MapStatistics(mapSimulation);
         rectangularMap = new RectangularMap(mapStatistics);
         genSeq2 = new int[]{0, 0, 7, 1, 1, 7, 2, 0, 2, 0, 2, 3, 7, 7, 7, 4, 4, 4, 4, 0, 7, 0, 7, 0, 5, 5, 6, 6, 7, 7, 7, 7};
@@ -57,7 +55,8 @@ class PairAnimalsTest {
 
     @Test
     void canPair() {
-
+        animal1 = new Animal(new Vector2d(2, 2), 200, new Gens(genSeq2));
+        animal2 = new Animal(new Vector2d(2, 2), 200, new Gens(genSeq2));
         assertTrue(
                 PairAnimals.canPair(
                         animal1, animal2

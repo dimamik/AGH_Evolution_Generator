@@ -9,9 +9,9 @@ import visual.map.cells.cellsViewModel.CellsWrapper;
 import java.util.LinkedList;
 
 public class UniverseViewModel {
-    final UniverseSimulation universeSimulation;
-    final LinkedList<MapStatistics> listOfStatistics;
-    final LinkedList<ViewRectangularMap> listOfMapViews;
+    private final UniverseSimulation universeSimulation;
+    private final LinkedList<MapStatistics> listOfStatistics;
+    private final LinkedList<ViewRectangularMap> listOfMapViews;
 
     public UniverseViewModel() {
         universeSimulation = new UniverseSimulation();

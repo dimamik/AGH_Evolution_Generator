@@ -6,12 +6,10 @@ import logic.objects.animal.FamilyMember;
 import java.util.LinkedList;
 
 public class AnimalStatistics {
-    final Animal animal;
     private final LinkedList<FamilyMember> childrenAnimalList;
     private final LinkedList<FamilyMember> parentsAnimalList;
 
-    public AnimalStatistics(Animal animal) {
-        this.animal = animal;
+    public AnimalStatistics() {
         childrenAnimalList = new LinkedList<>();
         parentsAnimalList = new LinkedList<>();
     }

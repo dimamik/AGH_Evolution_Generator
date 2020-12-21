@@ -14,14 +14,12 @@ import static logic.objects.ObjectStates.ANIMAL;
 import static logic.objects.ObjectStates.EMPTY_CELL;
 
 public class CellView extends Rectangle {
-    public final Vector2d position;
-    public final boolean isDominant;
-    public AbstractPositionedObject currentObject;
+    private final boolean isDominant;
+    private AbstractPositionedObject currentObject;
 
 
     public CellView(Vector2d position) {
         super(360 / (double) MAX_SIZE, 360 / (double) MAX_SIZE);
-        this.position = position;
         this.isDominant = false;
         currentObject = new EmptyCellObject(position);
         setFill(Color.LIGHTGRAY);

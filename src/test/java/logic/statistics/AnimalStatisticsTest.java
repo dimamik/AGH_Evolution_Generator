@@ -79,8 +79,14 @@ class AnimalStatisticsTest {
         statistics3.addToChildrenList(animal6, 20);
         statistics6.addToChildrenList(animal7, 21);
         statistics6.addToChildrenList(animal8, 22);
-        assertEquals(7, statistics1.getAncestorsNumberWrapper(22, 22));
+        assertEquals(2, statistics1.getAncestorsNumberWrapper(22, 22));
         assertEquals(5, statistics3.getAncestorsNumberWrapper(22, 22));
         assertEquals(2, statistics6.getAncestorsNumberWrapper(1, 22));
+    }
+
+
+    @Test
+    void testMytest() {
+
     }
 }
