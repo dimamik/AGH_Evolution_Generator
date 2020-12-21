@@ -1,133 +1,83 @@
-# Project idea and readme came from:
-# https://github.com/apohllo/obiektowe-lab/tree/master/lab8
-
-# Projekt nr 1 - generator ewolucyjny
-
-Niniejsza treść została zaadaptowana na podstawie opisu oraz ilustracji przygotowanych przez Wojciecha Kosiora.
-Inspiracją dla niego był z kolei książki "Land of Lisp" Conrada Barskiego, który zaś zainspirował się artykułem w
-"Scientific American" :-)
-
-## Formularz z linkiem do repozytorium
-
-https://forms.gle/wCFZecEAk81VAYTM8
+# Evolution Generator
+> Java evolution simulator, that gives statistics and allows user to control its flow
+> <br> The project is based on Object Programming assignment and implements [Requirements] 
 
 
-## Termin oddania projektu
 
-* 21.12.2019 godz. 23:59:59 CET - normalny termin oddania projektu
-* 23.12.2019 godz. 23:59:59 CET - późny termin oddania projektu tzn. -2 krwinki
+## 🔨 Installation and running
 
-## Cel projektu
+<ol>
+<li> OS X & Linux & Windows:
 
-Stwórzmy grę! Nie będzie to jednak gra, w którą my gramy. Zamiast tego będzie
-to świat, który ewoluuje na naszych oczach! Stworzymy środowisko stepów
-i dżungli ze zwierzętami, które biegają, buszują w zaroślach, jedzą i rozmnażają
-się. A po kilka milionach lat zobaczymy, że wyewoluowały w różne gatunki!
+```git
+git clone https://github.com/dimamik/AGH_Evolution_Generator.git
+```
+</li>
 
-<img src="zwierzak.jpg"/>
+<li>  Run Via Gradle -> run
+</li>
 
-Świat naszej gry jest niezmiernie prosty. Składa się ze zwykłej, prostokątnej
-połaci, której brzegi zawijają się na drugą stronę. Większość świata pokrywają
-stepy, na których rośnie niewiele roślin stanowiących pożywienie zwierząt. Na
-środku świata znajduje się niewielka dżungla, gdzie rośliny rosną dużo szybciej. 
+</ol>
 
-<img src="dzungla.jpg"/>
+## 💡 Usage Tips
 
-Nasze zwierzęta, które są roślinożercami, będą przemierzały ten świat w poszukiwaniu pożywienia. Każde zwierzę ma
-określoną energię, która zmniejsza się co dnia. Znalezienie i zjedzenie rośliny zwiększa poziom energii o pewną wartość.
+#### At any time of animation you can use:
 
-Rośliny będą wyrastały w losowych miejscach, ale ich koncentracja będzie większa w dżungli niż na stepie. Codziennie w
-naszym świecie pojawią się dwie nowe rośliny – jedna w każdej ze stref.
+* <b>"Show two maps checkbox"</b> - shows second map
+* <b> "New Day button" </b>- generates new day in our simulation (better to use on stopped animation to see effects)
+* <b> "Show dominant genome checkbox"</b> - stops simulation if running and shows animals with dominant genome as average dominant genome on map
+* <b>"Write Statistics button"</b> - stops simulation if running and writes average statistics to statistics.json 
+* <b> "Click on any animal on the map"</b> - (easier to use when animation is stopped) stops simulation if running and gives you an option to provide days number from the current day to accumulate statistics from 
 
-## Anatomia zwierzęcia
+#### At any time of animation you can follow (on the right side):
 
-
-<img src="zwierzak2.jpg"/>
-
-Musimy śledzić kilka cech każdego zwierzęcia. Po pierwsze, zarówno w przypadku rośliny jak i tych, którzy je zjadają,
-musimy znać koordynaty `x` i `y`. Wskazują nam one, gdzie dane zwierzę lub roślina jest na mapie.  Musimy także wiedzieć,
-ile energii ma dane zwierzę. To Darwinowska gra o przetrwanie, więc jeśli zwierzątko nie zdoła zdobyć odpowiedniej ilości
-pożywienia, będzie głodować i umrze. Atrybut "energia" mówi nam ile dni zostało jeszcze danemu zwierzątku. Musi ono
-koniecznie znaleźć więcej jedzenia, zanim zapas energii się wyczerpie.  Musimy także pamiętać, w którą stronę zwrócone
-jest zwierzę. Jest to ważne, ponieważ będzie ono przechodzić na sąsiedni kwadracik na mapie świata każdego dnia. Jest
-osiem różnych możliwych obrotów.
-
-<img src="kierunki.jpg"/>
-
-Obrót `0` oznacza, że zwierzę nie zmienia swojej orientacji, obrót `1` oznacza, że zwierzę obraca się o 45°, `2`, o 90°,
-itd. Przykładowo, jeśli zwierzę było skierowane na północ i obrót wynosi `1`, to zwierzę skierowane jest na
-północny wschód. 
-
-Na koniec musimy także przechowywać geny zwierzaka. Każdy zwierzę ma 32 geny składające się z jednej liczby w zakresie od 0 do 7. 
-Te geny reprezentują preferencje zwierzęcia względem określonego obrotu.  Każdego dnia zwierzę zadecyduje czy dalej
-podążać w tym samym kierunku, czy skręcić i zwrócić się w inną stronę. Zrobi to na podstawie tych i losowo
-wybierze nowy kierunek. Szansa na wybranie odpowiedniej strony jest proporcjonalna do liczby genów reprezentujących
-określony obrót. Weźmy jako przykład zwierzę z genami:
-`0 0 0 0 0 0 0 0 1 1 2 2 2 2 2 2 3 3 4 4 4 4 4 4 5 5 6 6 7 7 7 7`
-
-To zwierzę najbardziej preferuje brak obrotu (p=0.25), na drugim miejscu jest obrót w prawo (`2`) oraz obrót w tył (`4`)
-(p=0.1875), następny w kolejności jest obrót o 315 stopni (p=0.125). Pozostałe obroty mają takie samo prawdopodobieństwo (p=0.0625).
-
-## Konsumpcja i rozmnażanie
-
-Jedzenie jest prostym procesem. Zakładamy, że zwierzę zjada roślinę, gdy stanie na jej polu, a jego energia wzrasta
-wtedy o zdefiniowaną wartość.
-
-Rozmnażanie jest zwykle najciekawszą częścią każdej symulacji ze zwierzętami. Zdrowe młode może mieć tylko zdrowa para
-rodziców, dlatego nasze zwierzęta będą się rozmnażać tylko jeśli mają odpowiednią ilość energii. Przy reprodukcji
-rodzice tracą na rzecz młodego jedną czwartą swojej energii. 
+* <b>"Day of animation"</b> - current day of simulation
+* <b> "Animals alive" </b>- shows alive animals on the map
+* <b> "Total grass amount" </b>- shows total grass amount on the map
+* <b> "Average genomes in genotype of alive animals" </b>- shows average genotype array, where <b>array[i]</b> is an average number of gens in <b>i-th</b> genome representing rotation (0 - forward, ... , 4 - backwards) counting all alive animals. <br> For
+Example:
+array[0] = 5 shows that for genome type 0 (forward move) average number of this genome in genotype is 5 <br>
+For example "average" Animal would have in its 32-genome genotype 5 gens of 0-move
+* <b> "Average energy for alive animals" </b>- shows average energy for alive animals
+* <b> "Average live duration for dead animals" </b>- shows average live duration for dead animals
+* <b> "Average kids number for alive animals" </b>- shows average kids number for alive animals
 
 
-Atrybuty urodzonego zwierzęcia są takie same jak rodzica, z wyjątkiem genów. Wszystkie geny dzielone są na 3 grupy w
-losowo wybranych miejscach (na wybranych indeksach). Dziecko otrzymuje 2 grupy genów od jednego rodzica oraz 1 grupę
-genów od drugiego rodzica. Wartości są porządkowane, a jeśli okazałoby się, że któryś kierunek (lub kierunki) zostały
-wyeliminowane, to losowo wybrane geny przyjmują wartość brakujących obrotów. Innymi słowy zwierzę zawsze posiada co
-najmniej jeden gen każdego obrotu.
+#### When animal is selected, you can follow:
 
-## Symulacja
+* <b>"Genome types list"</b> - shows genotype array, where <b>array[i]</b> is the number of gens in <b>i-th</b> genome representing rotation (0 - forward, ... , 4 - backwards).<br> For
+Example:
+array[0] = 5 represents 5 gens of forward orientation in Animal genome
 
-Symulacja każdego dnia składa się z kilku kolejnych akcji:
-* usunięcie martwych zwierząt z mapy,
-* skręt i przemieszczenie każdego zwierzęcia,
-* jedzenie (roślina jest zjadana przez zwierzę posiadające najwięcej energii lub kilka najsilnijeszych zwierząt, jeśli więcej niż jedno
-  posiada taką samą, największą energię; w takim przypadku energia rośliny jest dzielona),
-* rozmnażanie zwierząt (rozmnażają się zawsze dwa zwierzęta o najwyższej energii, jeśli występuje więcej zwierząt o tej
-  samej energii, wybór jest losowy),
-* dodanie nowych roślin do mapy.
+* <b> "All kids in past n days" </b>- Shows number of kids of selected Animal which were born in last n days from current day
+* <b> "All Descedants in past n days"</b> - shows number of descedants (children of children and so on) which where born at last n days from current day
+* <b>"Energy"</b> - Energy of Selected Animal 
 
-Oczywiście na początku symulacji na środku świata umieszczamy jedno lub kilka zwierząt (Adam/Ewa).
 
-## Szczegółowe wymagania
+## 🔍 Demonstation of basic simulation funcions
+![demonstation]
+## 🔍 Demonstation of working on two maps
+![two_maps_demonstration]
 
-1. Program ma wyświetlać animację pokazującą pozycję zwierząt, ich energię w dowolnej formie (np. koloru) oraz pozycje
-   roślin.
-2. Można użyć dowolnego sposobu wyświetlania animacji (również tekstowego), ale aniamcja nie może polegać na
-   wyświetlaniu po sobie łańuchów tekstu (można natomiast wyświetlać łańcuchy tekstu w tym samym miejscu, wymaga to
-   jednak użycia odpowiedniej biblioteki).
-3. Program musi umożliwiać zatrzymywanie oraz wznawianie animacji w dowolnym momencie.
-4. Program ma pozwalać na śledzenie następujących statystyk dla aktualnej sytuacji w symulacji:
-   * liczby wszystkich zwierząt,
-   * liczby wszystkich roślin,
-   * dominujących genotypów,
-   * średniego poziomu energii dla żyjących zwierząt,
-   * średniej długości życia zwierząt dla martwych zwierząt,
-   * średniej liczby dzieci dla żyjących ziwerząt.
-5. Po zatrzymaniu programu można:
-   * wskazać pojedyncze zwierzę, co powoduje wyświetlenie jego genomu,
-   * wskazać pojedyncze zwierzę, w celu śledzenia jego historii:
-     * określenie liczby wszystkich dziedzi, po n-epokach,
-     * określenia liczby wszystkich potomków, po n-epokach,
-     * określenie epoki, w której zmarło,
-   * wskazać wszystkie zwierzęta z dominującym genomem.
-6. Program ma umożliwić wyświetelenie symulacji jednocześnie na dwóch mapach, z identycznymi parametrami początkowymi,
-   lecz niezależnie losowanymi decyzjami.
-7. Program powinien umożliwiać uzyskanie statyski (jak w punkcie 4) po określonej liczbie epok w formie pliku tekstowego.
-   Statystyki powinny stanowić uśrednienie wartości z poszczególnych epok.
+## 👽 Contributing
 
-[Często zadawane pytania](faq.md)
+1. Fork it (<https://github.com/dimamik/AGH_Evolution_Generator/fork>)
+2. Create your feature branch (`git checkout -b feature/fooBar`)
+3. Commit your changes (`git commit -am 'Add some fooBar'`)
+4. Push to the branch (`git push origin feature/fooBar`)
+5. Create a new Pull Request
 
-# Przykładowe implementacje
+## ✍️  Authors
 
-Uwaga: przedstawione implementacje niekoniecznie spełniają wymaga przestawione w sekcji "Szczegółowe wymagania".
+Developed by – [@dimamik](https://github.com/dimamik) 
 
-* https://www.youtube.com/watch?v=4FangGEpwe4
+<!-- Markdown link & img dfn's -->
+[two_maps_demonstration]: images/two_maps.gif
+[demonstation]: images/basics.gif
+[Requirements]: https://github.com/apohllo/obiektowe-lab/tree/master/lab8
+[npm-image]: https://img.shields.io/npm/v/datadog-metrics.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/datadog-metrics
+[npm-downloads]: https://img.shields.io/npm/dm/datadog-metrics.svg?style=flat-square
+[travis-image]: https://img.shields.io/travis/dbader/node-datadog-metrics/master.svg?style=flat-square
+[travis-url]: https://travis-ci.org/dbader/node-datadog-metrics
+[wiki]: https://github.com/yourname/yourproject/wiki
