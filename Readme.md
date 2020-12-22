@@ -6,18 +6,20 @@
 
 ## 🔨 Installation and running
 
-<ol>
-<li> OS X & Linux & Windows:
+
+* OS X & Linux & Windows:
 
 ```git
 git clone https://github.com/dimamik/AGH_Evolution_Generator.git
 ```
-</li>
 
-<li>  Run Via Gradle -> run
-</li>
+* Go to project folder and build project
+ * Using IntelliJ (in case of problems with initial build):
+   1. Go to File -> Settings -> Build,Execution,Deployment -> Build Tools -> Gradle 
+   2. Change Gradle JVM from Gradle 1.8 to Gradle 15
+   3. Aplly and run AGH_Evoluion_Generator [run]
 
-</ol>
+
 
 ## 💡 Usage Tips
 
