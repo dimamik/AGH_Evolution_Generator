@@ -22,15 +22,16 @@ git clone https://github.com/dimamik/AGH_Evolution_Generator.git
 
 ## 📝 Map Notation
 
+
 | Image on the map  | Description |
 | --- | --- |
-| ![](images\alive_animal.png)  | Alive Healthy Animal  |
-| ![](images\alive_sick_animal.png)  | Alive Sick Animal  |
-| ![](images\almost_dead_animal.png)  | Alive Almost Dead Animal |
-| ![](images\dead_selected.png)  | Animal that was selected being alive and now dead | 
-| ![](images\dominant_genome_animal.png)  | Animal with dominant genome | 
-| ![](images\selected_animal.png)  | Selected Animal | 
-| ![](images\grass.png)  | Grass | 
+| ![alive_animal]  | Alive Healthy Animal  |
+| ![sick]  | Alive Sick Animal  |
+| ![almost_dead]  | Alive Almost Dead Animal |
+| ![dead_selected]  | Animal that was selected being alive and now dead | 
+| ![dominant]  | Animal with dominant genome | 
+| ![selected]  | Selected Animal | 
+| ![grass]  | Grass | 
 
 
 ## 💡 Usage Tips
@@ -86,6 +87,13 @@ array[0] = 5 represents 5 gens of forward orientation in Animal genome
 Developed by – [@dimamik](https://github.com/dimamik) 
 
 <!-- Markdown link & img dfn's -->
+[grass]: images/grass.png
+[selected]: images/selected_animal.png
+[dominant]:images/dominant_genome_animal.png
+[dead_selected]: images/dead_selected.png
+[almost_dead]: images/almost_dead_animal.png
+[sick]: images/alive_sick_animal.png
+[alive_animal]: images/alive_animal.png
 [two_maps_demonstration]: images/two_maps.gif
 [demonstation]: images/basics.gif
 [Requirements]: https://github.com/apohllo/obiektowe-lab/tree/master/lab8
