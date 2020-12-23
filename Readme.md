@@ -20,6 +20,18 @@ git clone https://github.com/dimamik/AGH_Evolution_Generator.git
    3. Aplly and run AGH_Evoluion_Generator [run]
 
 
+## 📝 Map Notation
+
+| Image on the map  | Description |
+| --- | --- |
+| ![alive](images\alive_animal.png)  | Alive Healthy Animal  |
+| ![alive](images\alive_sick_animal.png)  | Alive Sick Animal  |
+| ![alive](images\almost_dead_animal.png)  | Alive Almost Dead Animal |
+| ![alive](images\dead_selected.png)  | Animal that was selected being alive and now dead | 
+| ![alive](images\dominant_genome_animal.png)  | Animal with dominant genome | 
+| ![alive](images\selected_animal.png)  | Selected Animal | 
+| ![alive](images\grass.png)  | Grass | 
+
 
 ## 💡 Usage Tips
 
